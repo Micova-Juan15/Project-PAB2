@@ -13,7 +13,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   String _errorText = '';
   bool _obscurePassword = true;
@@ -38,7 +39,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         !password.contains(RegExp(r'[0-9]')) ||
         !password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
       setState(() {
-        _errorText = 'Password minimal 8 karakter, kombinasi huruf besar, huruf kecil, angka, dan simbol.';
+        _errorText =
+            'Password minimal 8 karakter, kombinasi huruf besar, huruf kecil, angka, dan simbol.';
       });
       return;
     }
@@ -51,19 +53,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     try {
-      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      final UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-
-      // Menyimpan data user di Firestore
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'username': username,
         'email': email,
       });
-
-      // Navigasi ke layar sign in setelah berhasil sign up
-      Navigator.pushReplacementNamed(context, '/signin');
+      Navigator.pushReplacementNamed(
+          context, '/signin'); // Alamat routing untuk Sign In
     } on FirebaseAuthException catch (e) {
       setState(() {
         _errorText = e.message!;
@@ -87,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1BDDBA),
+      backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),

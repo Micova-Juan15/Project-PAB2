@@ -25,7 +25,7 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1BDDBA),
+      backgroundColor: Color.fromARGB(255, 73, 128, 117),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -68,7 +68,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(80,0,80,0),
+                      padding: const EdgeInsets.fromLTRB(80, 0, 80, 0),
                       child: ElevatedButton.icon(
                         onPressed: () {
                           Navigator.pushNamed(context, '/signup');
@@ -99,7 +99,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(38,15,35,60),
+                      padding: const EdgeInsets.fromLTRB(38, 15, 35, 60),
                       child: ElevatedButton.icon(
                         onPressed: _handleSignIn,
                         icon: Image.asset(
@@ -107,12 +107,10 @@ class _LandingScreenState extends State<LandingScreen> {
                           width: 24,
                           height: 24,
                         ),
-                          label: const Text(
+                        label: const Text(
                           'Sign Up with Google',
-                          style: TextStyle(
-                          color: Colors.black,
-                        fontSize: 18
-                       ), ),
+                          style: TextStyle(color: Colors.black, fontSize: 18),
+                        ),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18),
@@ -121,23 +119,24 @@ class _LandingScreenState extends State<LandingScreen> {
                       ),
                     ),
                     const SizedBox(
-                      height: 5, 
+                      height: 5,
                     ),
                     Align(
                       alignment: Alignment.center,
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 3, 0, 5),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 3, 0, 5),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: RichText(
-                            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                            textScaleFactor:
+                                MediaQuery.of(context).textScaleFactor,
                             text: TextSpan(
                               children: [
                                 const TextSpan(
                                   text: 'Already have an account?  ',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15),
+                                      color: Colors.white, fontSize: 15),
                                 ),
                                 TextSpan(
                                   text: 'Sign In',

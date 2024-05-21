@@ -64,6 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '165158061886',
     projectId: 'project-pab2',
     storageBucket: 'project-pab2.appspot.com',
+    iosClientId: '165158061886-hbp3phm4bm2s47rksirngd3bp3cld79v.apps.googleusercontent.com',
     iosBundleId: 'com.example.projectPab2',
   );
 
@@ -73,6 +74,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '165158061886',
     projectId: 'project-pab2',
     storageBucket: 'project-pab2.appspot.com',
+    iosClientId: '165158061886-hbp3phm4bm2s47rksirngd3bp3cld79v.apps.googleusercontent.com',
     iosBundleId: 'com.example.projectPab2',
   );
 
@@ -85,4 +87,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'project-pab2.appspot.com',
     measurementId: 'G-8EF2BSRDLT',
   );
+
 }
