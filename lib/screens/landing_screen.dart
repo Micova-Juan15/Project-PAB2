@@ -15,9 +15,7 @@ class _LandingScreenState extends State<LandingScreen> {
   void _handleSignIn() async {
     try {
       await _googleSignIn.signIn();
-      // Handle sign-in success, navigate to next screen or perform necessary actions
     } catch (error) {
-      // Handle sign-in failure
       print('Google Sign-In Error: $error');
     }
   }

@@ -17,40 +17,44 @@ class _SignInScreenState extends State<SignInScreen> {
   String _signInError = '';
 
   void _signIn() async {
+  setState(() {
+    _usernameError = '';
+    _passwordError = '';
+    _signInError = '';
+  });
+  if (_usernameController.text.isEmpty) {
     setState(() {
-      _usernameError = '';
-      _passwordError = '';
-      _signInError = '';
+      _usernameError = 'Please enter your username';
     });
-    if (_usernameController.text.isEmpty) {
-      setState(() {
-        _usernameError = 'Please enter your username';
-      });
-      return;
-    }
-    if (_passwordController.text.isEmpty) {
-      setState(() {
-        _passwordError = 'Please enter your password';
-      });
-      return;
-    }
-    try {
-      String email = await _getEmailFromUsername(_usernameController.text);
-      await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: _passwordController.text,
-      );
-      Navigator.pushReplacementNamed(context, '/profile'); 
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        _signInError = e.message!;
-      });
-    } catch (e) {
-      setState(() {
-        _signInError = 'An unexpected error occurred';
-      });
-    }
+    return;
   }
+  if (_passwordController.text.isEmpty) {
+    setState(() {
+      _passwordError = 'Please enter your password';
+    });
+    return;
+  }
+  try {
+    String email = await _getEmailFromUsername(_usernameController.text);
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: _passwordController.text,
+    );
+    // Dapatkan objek user dari userCredential
+    User user = userCredential.user!;
+    // Lanjutkan ke ProfileScreen tanpa memberikan argumen
+    Navigator.pushReplacementNamed(context, '/profile',); 
+  } on FirebaseAuthException catch (e) {
+    setState(() {
+      _signInError = e.message!;
+    });
+  } catch (e) {
+    setState(() {
+      _signInError = 'An unexpected error occurred';
+    });
+  }
+}
+
 
   Future<String> _getEmailFromUsername(String username) async {
     final userSnapshot = await FirebaseFirestore.instance
@@ -68,17 +72,18 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
         body: SingleChildScrollView(
-            child: Stack(children: [
-          Positioned(
-            top: 50,
-            left: 15,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
+            child: Stack(
+              children: [
+                Positioned(
+                top: 70,
+                left: 30,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
           Center(
             child: Container(
               padding: const EdgeInsets.all(60),
@@ -87,9 +92,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 children: [
                   const Text(
                     'SIGN IN',
-                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    style: TextStyle(fontSize: 50, color: Colors.white),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 40),
                   Image.asset(
                     'images/otak.png',
                     height: 200,

@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project_pab2/firebase_options.dart';
 import 'package:project_pab2/screens/landing_screen.dart';
 import 'package:project_pab2/screens/google_screen.dart';
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/google': (context) => GoogleSignInScreen(),
         '/signup': (context) => SignUpScreen(),
         '/signin': (context) => SignInScreen(),
-        '/profile': (context) => ProfileScreen()
+        '/profile': (context) => ProfileScreen(),      
       },
     );
   }

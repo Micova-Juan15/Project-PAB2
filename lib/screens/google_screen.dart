@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'profile_screen.dart';
 
 class GoogleSignInScreen extends StatefulWidget {
   @override
@@ -31,6 +32,14 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
     return null;
   }
 
+  void _navigateToProfileScreen(User user) {
+    Navigator.pushReplacementNamed(
+      context,
+      '/profile',
+      arguments: user,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +51,7 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
           onPressed: () async {
             User? user = await _signInWithGoogle();
             if (user != null) {
-              Navigator.pushReplacementNamed(context, '/home');
+              _navigateToProfileScreen(user);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(

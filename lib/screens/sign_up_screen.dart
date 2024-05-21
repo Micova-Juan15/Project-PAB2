@@ -85,20 +85,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(40),
           child: Column(
             children: [
-              const SizedBox(height: 50),
-              const Center(
-                child: Text(
-                  'SIGN UP',
-                  style: TextStyle(fontSize: 50.0, color: Colors.white),
-                ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(width: 20),
+                  const Text(
+                    'SIGN UP',
+                    style: TextStyle(fontSize: 50.0, color: Colors.white),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               _buildTextField(
@@ -146,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: _signUp,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
+                  shape: ContinuousRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   elevation: 5.0,
