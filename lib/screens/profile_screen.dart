@@ -1,167 +1,276 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:project_pab2/widgets/profile_info.dart';
+import 'package:project_pab2/screens/landing_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  File? _imageFile;
-  String fullName = '';
-  String userName = '';
-  String email = '';
-  bool isSignedIn = false;
   final picker = ImagePicker();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final String defaultImageUrl = 'assets/default_avatar.png';
+  TextEditingController _usernameController = TextEditingController();
+
+  bool isSignedIn = true;
+  String userName = '';
+  String email = '';
+  File? _imageFile;
+  String? imageUrl;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserData();
+    _loadUserData();
   }
 
-  Future<void> _fetchUserData() async {
+  void _loadUserData() async {
     User? user = _auth.currentUser;
     if (user != null) {
       DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
       setState(() {
-        fullName = userDoc['fullname'];
-        userName = userDoc['username'];
-        email = user.email!;
         isSignedIn = true;
+        userName = userDoc['username'];
+        email = user.email ?? '';
+        imageUrl = userDoc['imageUrl'];
       });
+      _usernameController.text = userName;
     }
   }
 
-  Future<void> _getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      if (pickedFile != null) {
-        _imageFile = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
+  Future<void> _updateUsername(String newUsername) async {
+    try {
+      await _firestore.collection('users').doc(_auth.currentUser!.uid).update({'username': newUsername});
+      setState(() {
+        userName = newUsername;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Username updated successfully')));
+      _usernameController.text = newUsername;
+    } catch (e) {
+      print('Error updating username: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating username')));
+    }
   }
 
-  Future<void> _uploadImage() async {
+  Future<void> _uploadImage(File imageFile) async {
     try {
-      if (_imageFile != null) {
-        String imageName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        Reference ref = _storage.ref().child('profile_images/$imageName');
-        await ref.putFile(_imageFile!);
-        String imageUrl = await ref.getDownloadURL();
-
-        // Simpan URL gambar di Firestore
-        await _firestore.collection('users').doc(_auth.currentUser!.uid).update({'imageUrl': imageUrl});
-
-        // Perbarui gambar profil di UI
+      if (imageFile != null) {
         setState(() {
-          _imageFile = null;
+          isLoading = true;
         });
+
+        String imageName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
+        String userId = _auth.currentUser!.uid;
+        Reference ref = _storage.ref().child('profile_images/$userId/$imageName');
+        TaskSnapshot uploadTask = await ref.putFile(imageFile);
+        String downloadUrl = await uploadTask.ref.getDownloadURL();
+
+        await _firestore.collection('users').doc(userId).update({'imageUrl': downloadUrl});
+
+        setState(() {
+          isLoading = false;
+          imageUrl = downloadUrl; 
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile image updated successfully')));
       }
     } catch (e) {
       print('Error uploading image: $e');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error uploading image')));
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
-  void signOut() async {
+  Future<void> _logout() async {
     await _auth.signOut();
-    setState(() {
-      isSignedIn = false;
-    });
-    Navigator.pushReplacementNamed(context, '/landing');
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LandingScreen()),
+      (route) => false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Profile User',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.indigo,
-        actions: [
-          if (isSignedIn)
-            IconButton(
-              onPressed: signOut,
-              icon: const Icon(Icons.logout),
-            ),
-        ],
-      ),
-      backgroundColor: Colors.grey[900],
+      backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () async {
-                await _getImage();
-                await _uploadImage();
-              },
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  tooltip: 'Back',
+                ),
+                const Text(
+                  'Profile User',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.topCenter,
               child: Stack(
-                alignment: Alignment.center,
+                alignment: Alignment.bottomRight,
                 children: [
-                  Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: _imageFile != null
-                        ? CircleAvatar(
-                            radius: 60,
-                            backgroundImage: FileImage(_imageFile!),
-                          )
-                        : const CircleAvatar(
-                            radius: 60,
-                            backgroundImage: AssetImage('images/default_avatar.png'),
+                  Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2,
                           ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.indigo,
+                          shape: BoxShape.circle,
+                        ),
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: _imageFile != null
+                              ? FileImage(_imageFile!)
+                              : imageUrl != null
+                                  ? NetworkImage(imageUrl!)
+                                  : AssetImage(defaultImageUrl) as ImageProvider,
+                        ),
                       ),
-                      child: const Icon(Icons.camera_alt, color: Colors.white),
-                    ),
+                    ],
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                      if (pickedFile != null) {
+                        File imageFile = File(pickedFile.path);
+                        _uploadImage(imageFile);
+                      } else {
+                        print('No image selected.');
+                      }
+                    },
+                    icon: const Icon(Icons.add_a_photo),
+                    tooltip: 'Change Profile Picture',
                   ),
                 ],
               ),
             ),
+            const SizedBox(height: 20),
             const Divider(color: Colors.white),
             const SizedBox(height: 10),
-            ProfileInfoItem(
-              label: 'Username',
-              value: userName,
+            Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: const Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Text(
+                        'Email',
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    email,
+                    style: const TextStyle(fontSize: 25, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
             const Divider(color: Colors.white),
             const SizedBox(height: 10),
-            ProfileInfoItem(
-              label: 'Email',
-              value: email,
+            Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: const Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Text(
+                        'Username',
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        userName,
+                        style: const TextStyle(
+                        fontSize: 25, 
+                        color: Colors.white),
+                      ),
+                      const SizedBox(height: 5),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Change Username'),
+                          content: TextField(
+                            controller: _usernameController,
+                            decoration: const InputDecoration(hintText: 'Enter new username'),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                String newUsername = _usernameController.text.trim();
+                                if (newUsername.isNotEmpty) {
+                                  _updateUsername(newUsername);
+                                }
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Save'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.edit),
+                  tooltip: 'Edit Username',
+                ),
+              ],
             ),
-            const Divider(color: Colors.white),
           ],
         ),
       ),

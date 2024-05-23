@@ -40,10 +40,8 @@ class _SignInScreenState extends State<SignInScreen> {
       email: email,
       password: _passwordController.text,
     );
-    // Dapatkan objek user dari userCredential
     User user = userCredential.user!;
-    // Lanjutkan ke ProfileScreen tanpa memberikan argumen
-    Navigator.pushReplacementNamed(context, '/profile',); 
+    Navigator.pushReplacementNamed(context, '/main',); 
   } on FirebaseAuthException catch (e) {
     setState(() {
       _signInError = e.message!;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_pab2/firebase_options.dart';
 import 'package:project_pab2/screens/landing_screen.dart';
 import 'package:project_pab2/screens/google_screen.dart';
+import 'package:project_pab2/screens/main_screen.dart';
 import 'package:project_pab2/screens/profile_screen.dart';
 import 'package:project_pab2/screens/sign_in_screen.dart';
 import 'package:project_pab2/screens/sign_up_screen.dart';
@@ -17,7 +18,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,14 +27,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LandingScreen(),
+      home:  ProfileScreen(),
       initialRoute: '/',
       routes: {
         '/landing': (context) => LandingScreen(),
         '/google': (context) => GoogleSignInScreen(),
-        '/signup': (context) => SignUpScreen(),
+        '/signup': (context) => const SignUpScreen(),
         '/signin': (context) => SignInScreen(),
-        '/profile': (context) => ProfileScreen(),      
+        '/profile': (context) => const ProfileScreen(), 
+        '/main' : (context) => const MainScreen(),
       },
     );
   }

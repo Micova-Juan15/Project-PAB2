@@ -32,35 +32,35 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
     return null;
   }
 
-  void _navigateToProfileScreen(User user) {
-    Navigator.pushReplacementNamed(
-      context,
-      '/profile',
-      arguments: user,
-    );
-  }
+ void _navigateToMainScreen(User user) {
+  Navigator.pushReplacementNamed(
+    context,
+    '/main',
+    arguments: user,
+  );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login with Google'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            User? user = await _signInWithGoogle();
-            if (user != null) {
-              _navigateToProfileScreen(user);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Failed to sign in with Google.'),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Login dengan Google'),
+    ),
+    body: Center(
+      child: ElevatedButton(
+        onPressed: () async {
+          User? user = await _signInWithGoogle();
+          if (user != null) {
+            _navigateToMainScreen(user);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Gagal masuk dengan Google.'),
                 ),
               );
             }
           },
-          child: Text('Sign in with Google'),
+          child: Text('Masuk dengan Google'),
         ),
       ),
     );
