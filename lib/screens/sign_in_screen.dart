@@ -41,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
       password: _passwordController.text,
     );
     User user = userCredential.user!;
-    Navigator.pushReplacementNamed(context, '/main',); 
+    Navigator.pushReplacementNamed(context, '/profile',); 
   } on FirebaseAuthException catch (e) {
     setState(() {
       _signInError = e.message!;

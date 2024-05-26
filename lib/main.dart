@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  ProfileScreen(),
+      home: LandingScreen(),
       initialRoute: '/',
       routes: {
         '/landing': (context) => LandingScreen(),
-        '/google': (context) => GoogleSignInScreen(),
+        '/google': (context) => GoogleLoginScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/signin': (context) => SignInScreen(),
         '/profile': (context) => const ProfileScreen(), 
