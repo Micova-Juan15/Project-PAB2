@@ -50,49 +50,172 @@ class InsertScreen extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
-        title: Text('Insert Question'),
+        title: Text('Insert Question', style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            TextField(
+            TextFormField(
               controller: imageUrlController,
-              decoration: InputDecoration(labelText: 'Insert Image Url'),
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'Insert Image Url',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Enter Image Url',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
             ),
-            TextField(
+            TextFormField(
               controller: questionController,
-              decoration: InputDecoration(labelText: 'Insert Question'),
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'Insert Question',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Enter Question',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
             ),
-            TextField(
+            TextFormField(
               controller: choice1Controller,
-              decoration: InputDecoration(labelText: 'Choice 1'),
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'Choice 1',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Enter Choice 1',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
             ),
-            TextField(
+            TextFormField(
               controller: choice2Controller,
-              decoration: InputDecoration(labelText: 'Choice 2'),
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'Choice 2',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Enter Choice 2',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
             ),
-            TextField(
+            TextFormField(
               controller: choice3Controller,
-              decoration: InputDecoration(labelText: 'Choice 3'),
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'Choice 3',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Enter Choice 3',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
             ),
-            TextField(
+            TextFormField(
               controller: choice4Controller,
-              decoration: InputDecoration(labelText: 'Choice 4'),
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'Choice 4',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Enter Choice 4',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
             ),
-            TextField(
-              controller: correctChoiceController,
-              decoration: InputDecoration(labelText: 'Insert Correct Choice Number'),
-              keyboardType: TextInputType.number,
+            TextFormField(
+              controller: choice4Controller,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'Insert Correct Choice Number',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Enter Correct Number',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
             ),
-            TextField(
-              controller: mapCoordinatesController,
-              decoration: InputDecoration(labelText: 'Insert Map Coordinates'),
+            TextFormField(
+              controller: choice4Controller,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                labelText: 'Insert Map Coordinates',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Enter Map Coordinates',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => _insertQuestion(context),
-              child: Text('Insert Question',style: TextStyle(color: Colors.black)),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+              ),
+              child: Text(
+                'Insert Question',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),
