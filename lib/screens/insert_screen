@@ -1,0 +1,104 @@
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class InsertScreen extends StatelessWidget {
+  final TextEditingController imageUrlController = TextEditingController();
+  final TextEditingController questionController = TextEditingController();
+  final TextEditingController choice1Controller = TextEditingController();
+  final TextEditingController choice2Controller = TextEditingController();
+  final TextEditingController choice3Controller = TextEditingController();
+  final TextEditingController choice4Controller = TextEditingController();
+  final TextEditingController correctChoiceController = TextEditingController();
+  final TextEditingController mapCoordinatesController = TextEditingController();
+
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  void _insertQuestion(BuildContext context) async {
+    try {
+      await firestore.collection('quiz').add({
+        'image_url': imageUrlController.text,
+        'question': questionController.text,
+        'choices': [
+          choice1Controller.text,
+          choice2Controller.text,
+          choice3Controller.text,
+          choice4Controller.text,
+        ],
+        'correct_choice': int.parse(correctChoiceController.text),
+        'map_coordinates': mapCoordinatesController.text,
+      });
+      // Clear text fields after successful insertion
+      imageUrlController.clear();
+      questionController.clear();
+      choice1Controller.clear();
+      choice2Controller.clear();
+      choice3Controller.clear();
+      choice4Controller.clear();
+      correctChoiceController.clear();
+      mapCoordinatesController.clear();
+
+      // Optionally, you can show a confirmation dialog or navigate back to previous screen
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Pertanyaan berhasil ditambahkan ke Firebase')),
+      );
+    } catch (e) {
+      print('Error inserting question: $e');
+      // Handle error accordingly, like showing an error dialog
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 73, 128, 117),
+      appBar: AppBar(
+        title: Text('Insert Question'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            TextField(
+              controller: imageUrlController,
+              decoration: InputDecoration(labelText: 'Insert Image Url'),
+            ),
+            TextField(
+              controller: questionController,
+              decoration: InputDecoration(labelText: 'Insert Question'),
+            ),
+            TextField(
+              controller: choice1Controller,
+              decoration: InputDecoration(labelText: 'Choice 1'),
+            ),
+            TextField(
+              controller: choice2Controller,
+              decoration: InputDecoration(labelText: 'Choice 2'),
+            ),
+            TextField(
+              controller: choice3Controller,
+              decoration: InputDecoration(labelText: 'Choice 3'),
+            ),
+            TextField(
+              controller: choice4Controller,
+              decoration: InputDecoration(labelText: 'Choice 4'),
+            ),
+            TextField(
+              controller: correctChoiceController,
+              decoration: InputDecoration(labelText: 'Insert Correct Choice Number'),
+              keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: mapCoordinatesController,
+              decoration: InputDecoration(labelText: 'Insert Map Coordinates'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _insertQuestion(context),
+              child: Text('Insert Question'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LandingScreen extends StatefulWidget {
-  LandingScreen({Key? key}) : super(key: key);
+  const LandingScreen({super.key});
 
   @override
   _LandingScreenState createState() => _LandingScreenState();
@@ -23,7 +23,7 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 73, 128, 117),
+      backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       body: Container(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -127,8 +127,6 @@ class _LandingScreenState extends State<LandingScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: RichText(
-                            textScaleFactor:
-                                MediaQuery.of(context).textScaleFactor,
                             text: TextSpan(
                               children: [
                                 const TextSpan(
@@ -150,7 +148,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                     },
                                 ),
                               ],
-                            ),
+                            ), textScaler: TextScaler.linear(MediaQuery.of(context).textScaleFactor),
                           ),
                         ),
                       ),

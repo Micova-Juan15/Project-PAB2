@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'profile_screen.dart'; // Import ProfileScreen.dart
 
 class GoogleLoginScreen extends StatefulWidget {
+  const GoogleLoginScreen({super.key});
+
   @override
   _GoogleLoginScreenState createState() => _GoogleLoginScreenState();
 }
@@ -44,7 +46,7 @@ class _GoogleLoginScreenState extends State<GoogleLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Google Login'),
+        title: const Text('Google Login'),
       ),
       body: Center(
         child: Column(
@@ -58,19 +60,19 @@ class _GoogleLoginScreenState extends State<GoogleLoginScreen> {
                   // If login successful, navigate to profile screen
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    MaterialPageRoute(builder: (context) => const ProfileScreen()),
                   );
                 }
               },
-              child: Text('Sign in with Google'),
+              child: const Text('Sign in with Google'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 // Remove Google account and sign out
                 await _removeAccount();
               },
-              child: Text('Remove Account'),
+              child: const Text('Remove Account'),
             ),
           ],
         ),

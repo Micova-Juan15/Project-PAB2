@@ -8,7 +8,7 @@ import 'favorite_screen.dart'; // Import FavoriteScreen.dart
 import 'landing_screen.dart'; // Import LandingScreen.dart for logout
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   bool isSignedIn = true;
   String userName = '';
@@ -54,11 +54,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         userName = newUsername;
       });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Username updated successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Username updated successfully')));
       _usernameController.text = newUsername;
     } catch (e) {
       print('Error updating username: $e');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating username')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error updating username')));
     }
   }
 
@@ -82,10 +82,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         imageUrl = downloadUrl;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile picture updated successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile picture updated successfully')));
     } catch (e) {
       print('Error uploading image: $e');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error uploading image')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error uploading image')));
       setState(() {
         isLoading = false;
       });
@@ -292,7 +292,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => FavoriteScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoriteScreen()));
                     },
                     child: const Text(
                       'View favorite list',
@@ -315,7 +315,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _auth.signOut();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LandingScreen()),
+                    MaterialPageRoute(builder: (context) => const LandingScreen()),
                   );
                 },
                 child: const Padding(
