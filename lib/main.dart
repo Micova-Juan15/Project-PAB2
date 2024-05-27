@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_pab2/firebase_options.dart';
 import 'package:project_pab2/screens/landing_screen.dart';
 import 'package:project_pab2/screens/google_screen.dart';
-import 'package:project_pab2/screens/main_screen.dart';
+import 'package:project_pab2/screens/home_screen.dart';
 import 'package:project_pab2/screens/profile_screen.dart';
 import 'package:project_pab2/screens/sign_in_screen.dart';
 import 'package:project_pab2/screens/sign_up_screen.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpScreen(),
         '/signin': (context) => const SignInScreen(),
         '/profile': (context) => const ProfileScreen(),
-        '/main': (context) => MainScreen(),
+        '/home': (context) => HomeScreen(),
       },
     );
   }

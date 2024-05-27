@@ -45,7 +45,7 @@ class _SignInScreenState extends State<SignInScreen> {
       User user = userCredential.user!;
       Navigator.pushReplacementNamed(
         context,
-        '/main',
+        '/home',
       );
     } on FirebaseAuthException catch (e) {
       setState(() {

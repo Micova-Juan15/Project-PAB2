@@ -30,12 +30,10 @@ class QuizScreen extends StatelessWidget {
                   quizList[index].data() as Map<String, dynamic>?;
 
               if (questionData == null) {
-                return SizedBox(); // atau widget lain sesuai kebutuhan jika data null
+                return SizedBox(); 
               }
-
-              // Tampilkan pertanyaan
               return Card(
-                margin: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
                 child: ListTile(
                   title: Text(questionData['question'] as String? ?? ''),
                   subtitle: Column(

@@ -66,16 +66,15 @@ class _LandingScreenState extends State<LandingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(80, 0, 80, 0),
+                      padding: const EdgeInsets.fromLTRB(65, 10, 60, 0),
                       child: ElevatedButton.icon(
                         onPressed: () {
                           Navigator.pushNamed(context, '/signup');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
-                          elevation: 5,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                         icon: Image.asset(
@@ -97,7 +96,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(38, 15, 35, 60),
+                      padding: const EdgeInsets.fromLTRB(38, 15, 35, 30),
                       child: ElevatedButton.icon(
                         onPressed: _handleSignIn,
                         icon: Image.asset(
