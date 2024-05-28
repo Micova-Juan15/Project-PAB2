@@ -13,9 +13,9 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
-        title: Text('Home', style: TextStyle(color: Colors.white)),
+        title: const Text('Home', style: TextStyle(color: Colors.white)),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => ProfileScreen()),
               );
             },
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
             color: Colors.white,
           )
         ],
@@ -80,13 +80,11 @@ class HomeScreen extends StatelessWidget {
                   quizList[index].data() as Map<String, dynamic>?;
 
               if (questionData == null) {
-                return SizedBox();
+                return const SizedBox();
               }
-
-              //-------------//
               return Column(
                 children: [
-                  Padding(padding: const EdgeInsets.all(10)),
+                  const Padding(padding:  EdgeInsets.all(10)),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(

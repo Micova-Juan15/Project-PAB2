@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_pab2/models/quiz.dart';
 import 'package:project_pab2/services/quiz_service.dart';
+import 'package:project_pab2/screens/detail_screen.dart';  
 
 class InsertScreen extends StatefulWidget {
   @override
@@ -20,15 +22,24 @@ class _InsertScreenState extends State<InsertScreen> {
   final TextEditingController choice4Controller = TextEditingController();
   final TextEditingController correctChoiceController = TextEditingController();
   final TextEditingController latitudeController = TextEditingController();
-  final TextEditingController longtitudeController = TextEditingController();
+  final TextEditingController longitudeController = TextEditingController(); 
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
   void _pickImage() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _imageFile = File(pickedFile!.path);
     });
+  }
+
+  Future<String> _uploadImage(File imageFile) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference storageReference = FirebaseStorage.instance.ref().child('quiz_images/$fileName');
+    UploadTask uploadTask = storageReference.putFile(imageFile);
+    TaskSnapshot storageTaskSnapshot = await uploadTask;
+    String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
   }
 
   void _insertQuestion() async {
@@ -37,7 +48,8 @@ class _InsertScreenState extends State<InsertScreen> {
         print('No image selected.');
         return;
       }
-      String imageUrl = ''; 
+      
+      String imageUrl = await _uploadImage(_imageFile!);
 
       Quiz quiz = Quiz(
         question: questionController.text,
@@ -47,16 +59,24 @@ class _InsertScreenState extends State<InsertScreen> {
         choice3: choice3Controller.text,
         choice4: choice4Controller.text,
         correctChoice: correctChoiceController.text,
-        latitude: latitudeController.text,
-        longitude: longtitudeController.text,
         imageUrl: imageUrl,
+        latitude: latitudeController.text,
+longitude: longitudeController.text,
       );
+
       await QuizService.addQuiz(quiz);
 
-      Navigator.pop(context);
+      _navigateToDetailScreen(quiz);
     } catch (e) {
       print('Error inserting question: $e');
     }
+  }
+
+  void _navigateToDetailScreen(Quiz quiz) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DetailScreen(quiz: quiz)),
+    );
   }
 
   @override
@@ -65,9 +85,9 @@ class _InsertScreenState extends State<InsertScreen> {
       backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
-        title: Text('Insert Question', style: TextStyle(color: Colors.white)),
+        title: const Text('Insert Question', style: TextStyle(color: Colors.white)),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -77,14 +97,25 @@ class _InsertScreenState extends State<InsertScreen> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            ElevatedButton(
-              onPressed: _pickImage,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-              ),
-              child: const Text(
-                'Pick Image',
-                style: TextStyle(color: Colors.white),
+            TextFormField(
+              readOnly: true,
+              onTap: _pickImage,
+              cursorColor: Colors.black,
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.transparent,
+                labelText: 'Pick Image',
+                labelStyle: const TextStyle(color: Colors.black),
+                hintText: 'Tap to Pick Image',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
               ),
             ),
             if (_imageFile != null) ...[
@@ -92,14 +123,14 @@ class _InsertScreenState extends State<InsertScreen> {
               const SizedBox(height: 20),
             ],
             const SizedBox(height: 10),
-            const Text("Question", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Question", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
               controller: questionController,
-              cursorColor: const Color(0xFF777777),
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Question',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -112,14 +143,14 @@ class _InsertScreenState extends State<InsertScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Description", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Description", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
               controller: descriptionController,
-              cursorColor: const Color(0xFF777777),
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Description',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -132,14 +163,14 @@ class _InsertScreenState extends State<InsertScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Choice 1", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Choice 1", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
               controller: choice1Controller,
-              cursorColor: const Color(0xFF777777),
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Choice 1',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -152,14 +183,14 @@ class _InsertScreenState extends State<InsertScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Choice 2", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Choice 2", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
               controller: choice2Controller,
-              cursorColor: const Color(0xFF777777),
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Choice 2',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -172,14 +203,14 @@ class _InsertScreenState extends State<InsertScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Choice 3", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Choice 3", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
               controller: choice3Controller,
-              cursorColor: const Color(0xFF777777),
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Choice 3',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -192,14 +223,14 @@ class _InsertScreenState extends State<InsertScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Choice 4", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Choice 4", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
               controller: choice4Controller,
-              cursorColor: const Color(0xFF777777),
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Choice 4',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -212,14 +243,14 @@ class _InsertScreenState extends State<InsertScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Correct Choice", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Correct Choice", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
               controller: correctChoiceController,
-              cursorColor: const Color(0xFF777777),
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Correct Choice',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -232,14 +263,14 @@ class _InsertScreenState extends State<InsertScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Latitude", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Latitude", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
               controller: latitudeController,
-              cursorColor: const Color(0xFF777777),
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Latitude',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -252,14 +283,14 @@ class _InsertScreenState extends State<InsertScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text("Longtitude", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            const Text("Longtitude", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
             TextFormField(
-              controller: longtitudeController,
-              cursorColor: const Color(0xFF777777),
+              controller: longitudeController,
+              cursorColor: Colors.black,
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Colors.transparent,
                 hintText: 'Enter Longtitude',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
