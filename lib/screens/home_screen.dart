@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_pab2/screens/insert_screen';
+import 'package:project_pab2/screens/insert_screen.dart';
 import 'package:project_pab2/screens/profile_screen.dart';
 import 'package:project_pab2/screens/quiz_screen.dart';
 import 'package:flutter/material.dart';

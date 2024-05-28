@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -10,16 +9,6 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-  void _handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print('Google Sign-In Error: $error');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,26 +80,6 @@ class _LandingScreenState extends State<LandingScreen> {
                               color: Colors.black,
                               fontSize: 18,
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(38, 15, 35, 30),
-                      child: ElevatedButton.icon(
-                        onPressed: _handleSignIn,
-                        icon: Image.asset(
-                          'images/google.png',
-                          width: 24,
-                          height: 24,
-                        ),
-                        label: const Text(
-                          'Sign Up with Google',
-                          style: TextStyle(color: Colors.black, fontSize: 18),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
                           ),
                         ),
                       ),
