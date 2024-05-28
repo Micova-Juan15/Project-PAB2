@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_pab2/models/quiz.dart';
 import 'package:project_pab2/screens/insert_screen.dart';
 import 'package:project_pab2/screens/profile_screen.dart';
 import 'package:project_pab2/screens/quiz_screen.dart';
@@ -71,7 +72,8 @@ class HomeScreen extends StatelessWidget {
 
           final List<QueryDocumentSnapshot> quizList = snapshot.data!.docs;
 
-          return ListView.builder(
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
             itemCount: quizList.length,
             itemBuilder: (context, index) {
               final questionData =
@@ -82,17 +84,19 @@ class HomeScreen extends StatelessWidget {
               }
 
               //-------------//
-              return ElevatedButton(
-                onPressed: () {
-                  // Navigasi ke layar kuis di sini
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            QuizScreen()), // Ganti QuizScreen() dengan nama kelas layar kuis Anda
-                  );
-                },
-                child: Text('Quiz ${index + 1}'),
+              return Column(
+                children: [
+                  Padding(padding: const EdgeInsets.all(10)),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => QuizScreen()),
+                      );
+                    },
+                    child: Text('Quiz ${index + 1}'),
+                  ),
+                ],
               );
             },
           );

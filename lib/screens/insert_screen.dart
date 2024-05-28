@@ -19,8 +19,8 @@ class _InsertScreenState extends State<InsertScreen> {
   final TextEditingController choice3Controller = TextEditingController();
   final TextEditingController choice4Controller = TextEditingController();
   final TextEditingController correctChoiceController = TextEditingController();
-  final TextEditingController mapCoordinatesController =
-      TextEditingController();
+  final TextEditingController latitudeController = TextEditingController();
+  final TextEditingController longtitudeController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
 
@@ -47,6 +47,8 @@ class _InsertScreenState extends State<InsertScreen> {
         choice3: choice3Controller.text,
         choice4: choice4Controller.text,
         correctChoice: correctChoiceController.text,
+        latitude: latitudeController.text,
+        longitude: longtitudeController.text,
         imageUrl: imageUrl,
       );
       await QuizService.addQuiz(quiz);
@@ -89,13 +91,15 @@ class _InsertScreenState extends State<InsertScreen> {
               Image.file(_imageFile!),
               const SizedBox(height: 20),
             ],
+            const SizedBox(height: 10),
+            const Text("Question", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
             TextFormField(
               controller: questionController,
               cursorColor: const Color(0xFF777777),
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
-                labelText: 'Insert Question',
-                labelStyle: const TextStyle(color: Colors.black),
+                filled: true,
+                fillColor: Colors.white,
                 hintText: 'Enter Question',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
@@ -107,7 +111,167 @@ class _InsertScreenState extends State<InsertScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            const Text("Description", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            TextFormField(
+              controller: descriptionController,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Enter Description',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text("Choice 1", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            TextFormField(
+              controller: choice1Controller,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Enter Choice 1',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text("Choice 2", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            TextFormField(
+              controller: choice2Controller,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Enter Choice 2',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text("Choice 3", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            TextFormField(
+              controller: choice3Controller,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Enter Choice 3',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text("Choice 4", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            TextFormField(
+              controller: choice4Controller,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Enter Choice 4',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text("Correct Choice", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            TextFormField(
+              controller: correctChoiceController,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Enter Correct Choice',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text("Latitude", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            TextFormField(
+              controller: latitudeController,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Enter Latitude',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text("Longtitude", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            TextFormField(
+              controller: longtitudeController,
+              cursorColor: const Color(0xFF777777),
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Enter Longtitude',
+                hintStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: const BorderSide(
+                    color: Colors.black,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _insertQuestion,
               style: ButtonStyle(

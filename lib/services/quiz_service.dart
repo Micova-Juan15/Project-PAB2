@@ -55,10 +55,8 @@ static Future<void> addQuiz(Quiz quiz) async {
           choice4: data['choice4'],
           correctChoice: data['correctChoice'],
           imageUrl: data['image_url'],
-          latitude:
-              data['latitude'] != null ? data['latitude'] as double : null,
-          longitude:
-              data['longitude'] != null ? data['longitude'] as double : null,
+          latitude: data['latitude'],
+          longitude: data['longitude'],
           createdAt: data['created_at'] != null
               ? data['created_at'] as Timestamp
               : null,
