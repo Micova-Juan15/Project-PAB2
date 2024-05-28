@@ -44,8 +44,7 @@ class QuizScreen extends StatelessWidget {
                       Text('Choice 3: ${questionData['choice3']}'),
                       Text('Choice 4: ${questionData['choice4']}'),
                       Text('Correct Choice: ${questionData['correct_choice']}'),
-                      Text(
-                          'Map Coordinates: ${questionData['map_coordinates']}'),
+                      Text('Map Coordinates: ${questionData['map_coordinates']}'),
                     ],
                   ),
                 ),

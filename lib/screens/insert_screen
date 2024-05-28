@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InsertScreen extends StatelessWidget {
@@ -18,16 +19,14 @@ class InsertScreen extends StatelessWidget {
       await firestore.collection('quiz').add({
         'image_url': imageUrlController.text,
         'question': questionController.text,
-        'choices': [
-          choice1Controller.text,
-          choice2Controller.text,
-          choice3Controller.text,
-          choice4Controller.text,
-        ],
+        'choice1': choice1Controller.text,
+        'choice2': choice2Controller.text,
+        'choice3': choice3Controller.text,
+        'choice4': choice4Controller.text,
         'correct_choice': int.parse(correctChoiceController.text),
         'map_coordinates': mapCoordinatesController.text,
       });
-      // Clear text fields after successful insertion
+      // Clear text fields
       imageUrlController.clear();
       questionController.clear();
       choice1Controller.clear();
@@ -62,24 +61,24 @@ class InsertScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            TextFormField(
-              controller: imageUrlController,
-              cursorColor: const Color(0xFF777777),
-              style: const TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                labelText: 'Insert Image Url',
-                labelStyle: const TextStyle(color: Colors.black),
-                hintText: 'Enter Image Url',
-                hintStyle: const TextStyle(color: Colors.black),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
-                    width: 5.0,
-                  ),
-                ),
+            ElevatedButton(
+              onPressed: () async {
+                final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                if (pickedFile != null) {
+                  imageUrlController.text = pickedFile.path;
+                } else {
+                  print('No image selected.');
+                }
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+              ),
+              child: Text(
+                'Pick Image',
+                style: TextStyle(color: Colors.white),
               ),
             ),
+
             TextFormField(
               controller: questionController,
               cursorColor: const Color(0xFF777777),
@@ -171,7 +170,7 @@ class InsertScreen extends StatelessWidget {
               ),
             ),
             TextFormField(
-              controller: choice4Controller,
+              controller: correctChoiceController,
               cursorColor: const Color(0xFF777777),
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
@@ -189,7 +188,7 @@ class InsertScreen extends StatelessWidget {
               ),
             ),
             TextFormField(
-              controller: choice4Controller,
+              controller: mapCoordinatesController,
               cursorColor: const Color(0xFF777777),
               style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
