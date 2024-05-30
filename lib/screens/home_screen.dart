@@ -45,16 +45,6 @@ class HomeScreen extends StatelessWidget {
             },
             child: const Icon(Icons.add),
           ),
-          const SizedBox(width: 10),
-          FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => QuizScreen()),
-              );
-            },
-            child: const Icon(Icons.quiz_outlined),
-          ),
         ],
       ),
       body: FutureBuilder<QuerySnapshot>(
@@ -73,7 +63,8 @@ class HomeScreen extends StatelessWidget {
           final List<QueryDocumentSnapshot> quizList = snapshot.data!.docs;
 
           return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3),
             itemCount: quizList.length,
             itemBuilder: (context, index) {
               final questionData = quizList[index].data() as Map<String, dynamic>?;
@@ -83,12 +74,13 @@ class HomeScreen extends StatelessWidget {
               }
               return Column(
                 children: [
-                  const Padding(padding:  EdgeInsets.all(10)),
+                  const Padding(padding: EdgeInsets.all(10)),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => QuizScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => QuizScreen(quiz: questionData)),
                       );
                     },
                     child: Text('Quiz ${index + 1}'),
