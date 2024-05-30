@@ -26,8 +26,7 @@ class QuizScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: quizList.length,
             itemBuilder: (context, index) {
-              final questionData =
-                  quizList[index].data() as Map<String, dynamic>?;
+              final questionData = quizList[index].data() as Map<String, dynamic>?;
 
               if (questionData == null) {
                 return SizedBox(); 
