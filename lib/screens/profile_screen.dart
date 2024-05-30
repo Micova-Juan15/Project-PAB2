@@ -37,12 +37,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _loadUserData() async {
     User? user = _auth.currentUser;
     if (user != null) {
-      DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(user.uid).get();
       setState(() {
         isSignedIn = true;
         userName = userDoc['username'];
         email = user.email ?? '';
-        imageUrl = userDoc['imageUrl'];
+        if (imageUrl == null) {
+          imageUrl = '';
+        } else {
+          imageUrl = userDoc['imageUrl'];
+        }
       });
       _usernameController.text = userName;
     }
@@ -50,15 +55,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _updateUsername(String newUsername) async {
     try {
-      await _firestore.collection('users').doc(_auth.currentUser!.uid).update({'username': newUsername});
+      await _firestore
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .update({'username': newUsername});
       setState(() {
         userName = newUsername;
       });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Username updated successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Username updated successfully')));
       _usernameController.text = newUsername;
     } catch (e) {
       print('Error updating username: $e');
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error updating username')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error updating username')));
     }
   }
 
@@ -75,17 +85,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       TaskSnapshot uploadTask = await ref.putFile(imageFile);
       String downloadUrl = await uploadTask.ref.getDownloadURL();
 
-      await _firestore.collection('users').doc(userId).update({'imageUrl': downloadUrl});
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .update({'imageUrl': downloadUrl});
 
       setState(() {
         isLoading = false;
         imageUrl = downloadUrl;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile picture updated successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Profile picture updated successfully')));
     } catch (e) {
       print('Error uploading image: $e');
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error uploading image')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Error uploading image')));
       setState(() {
         isLoading = false;
       });
@@ -126,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.white, width: 3),
-                    ),  
+                    ),
                     child: CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.transparent,
@@ -136,7 +151,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ? NetworkImage(imageUrl!) as ImageProvider<Object>
                               : null,
                       child: imageUrl == null && _imageFile == null
-                          ? const Icon(Icons.person, size: 50, color: Colors.white)
+                          ? const Icon(Icons.person,
+                              size: 50, color: Colors.white)
                           : null,
                     ),
                   ),
@@ -156,7 +172,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).pop(ImageSource.gallery);
+                                  Navigator.of(context)
+                                      .pop(ImageSource.gallery);
                                 },
                                 child: const Text('Gallery'),
                               ),
@@ -197,7 +214,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(width: 10),
                       Text(
                         'Email: ',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ],
                   ),
@@ -222,13 +242,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(width: 10),
                       Text(
                         'Username: ',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 10),
-                Expanded( 
+                Expanded(
                   child: Text(
                     userName,
                     style: const TextStyle(fontSize: 15, color: Colors.white),
@@ -243,7 +266,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title: const Text('Change Username'),
                           content: TextField(
                             controller: _usernameController,
-                            decoration: const InputDecoration(hintText: 'Enter new username'),
+                            decoration: const InputDecoration(
+                                hintText: 'Enter new username'),
                           ),
                           actions: [
                             TextButton(
@@ -254,7 +278,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             TextButton(
                               onPressed: () {
-                                String newUsername = _usernameController.text.trim();
+                                String newUsername =
+                                    _usernameController.text.trim();
                                 if (newUsername.isNotEmpty) {
                                   _updateUsername(newUsername);
                                 }
@@ -283,7 +308,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(width: 10),
                       Text(
                         'Favorite: ',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ],
                   ),
@@ -292,11 +320,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoriteScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const FavoriteScreen()));
                     },
                     child: const Text(
                       'View favorite list',
-                      style: TextStyle(fontSize: 15, color: Colors.white, decoration: TextDecoration.underline),
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                          decoration: TextDecoration.underline),
                     ),
                   ),
                 ),
@@ -315,7 +349,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _auth.signOut();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LandingScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const LandingScreen()),
                   );
                 },
                 child: const Padding(
