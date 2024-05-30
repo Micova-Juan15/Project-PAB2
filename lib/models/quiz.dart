@@ -29,7 +29,7 @@ class Quiz {
       this.imageUrl,
       this.createdAt,
       this.updatedAt});
-  
+
   factory Quiz.fromDocument(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Quiz(
@@ -53,11 +53,11 @@ class Quiz {
     return {
       'question': question,
       'description': description,
-      'choice1' : choice1,
-      'choice2' : choice2,
-      'choice3' : choice3,
-      'choice4' : choice4,
-      'correct_choice' : correctChoice,
+      'choice1': choice1,
+      'choice2': choice2,
+      'choice3': choice3,
+      'choice4': choice4,
+      'correct_choice': correctChoice,
       'image_url': imageUrl,
       'latitude': latitude,
       'longitude': longitude,

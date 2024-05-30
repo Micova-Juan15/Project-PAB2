@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:project_pab2/models/quiz.dart';
 
-class QuizService{
+class QuizService {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
-  static final CollectionReference _quizsCollection = _database.collection('quiz');
+  static final CollectionReference _quizsCollection =
+      _database.collection('quiz');
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
-static Future<void> addQuiz(Quiz quiz) async {
+  static Future<void> addQuiz(Quiz quiz) async {
     Map<String, dynamic> newQuiz = {
       'question': quiz.question,
       'description': quiz.description,
@@ -63,8 +64,8 @@ static Future<void> addQuiz(Quiz quiz) async {
           choice2: data['choice2'],
           choice3: data['choice3'],
           choice4: data['choice4'],
-          correctChoice: data['correctChoice'],
-          imageUrl: data['image_url'],
+          correctChoice: data['correct_choice'],
+          imageUrl: data['imageUrl'],
           latitude: data['latitude'],
           longitude: data['longitude'],
           createdAt: data['created_at'] != null
