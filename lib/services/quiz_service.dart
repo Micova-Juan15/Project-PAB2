@@ -11,6 +11,11 @@ static Future<void> addQuiz(Quiz quiz) async {
     Map<String, dynamic> newQuiz = {
       'question': quiz.question,
       'description': quiz.description,
+      'choice1': quiz.choice1,
+      'choice2': quiz.choice2,
+      'choice3': quiz.choice3,
+      'choice4': quiz.choice4,
+      'correct_choice': quiz.correctChoice,
       'image_url': quiz.imageUrl,
       'latitude': quiz.latitude,
       'longitude': quiz.longitude,
@@ -24,6 +29,11 @@ static Future<void> addQuiz(Quiz quiz) async {
     Map<String, dynamic> updatedQuiz = {
       'question': quiz.question,
       'description': quiz.description,
+      'choice1': quiz.choice1,
+      'choice2': quiz.choice2,
+      'choice3': quiz.choice3,
+      'choice4': quiz.choice4,
+      'correct_choice': quiz.correctChoice,
       'image_url': quiz.imageUrl,
       'latitude': quiz.latitude,
       'longitude': quiz.longitude,

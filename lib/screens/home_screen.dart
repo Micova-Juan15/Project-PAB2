@@ -76,8 +76,7 @@ class HomeScreen extends StatelessWidget {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
             itemCount: quizList.length,
             itemBuilder: (context, index) {
-              final questionData =
-                  quizList[index].data() as Map<String, dynamic>?;
+              final questionData = quizList[index].data() as Map<String, dynamic>?;
 
               if (questionData == null) {
                 return const SizedBox();
