@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,13 +23,32 @@ class _InsertScreenState extends State<InsertScreen> {
   final TextEditingController latitudeController = TextEditingController();
   final TextEditingController longtitudeController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  bool isLoading = false;
+  String imageUrl = '';
   File? _imageFile;
 
   void _pickImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _imageFile = File(pickedFile!.path);
-    });
+    if (pickedFile != null) {
+      setState(() {
+        isLoading = true;
+        _imageFile = File(pickedFile.path);
+      });
+
+      String imageName = 'quiz${DateTime.now().millisecondsSinceEpoch}.jpg';
+      Reference ref = _storage.ref().child('quiz_images/$imageName');
+      TaskSnapshot uploadTask =
+          await ref.putFile(_imageFile!); // Use ! to assert non-nullability
+      String downloadUrl = await uploadTask.ref.getDownloadURL();
+
+      setState(() {
+        isLoading = false;
+        imageUrl = downloadUrl;
+      });
+    } else {
+      print('No image selected.');
+    }
   }
 
   void _insertQuestion() async {
@@ -37,7 +57,6 @@ class _InsertScreenState extends State<InsertScreen> {
         print('No image selected.');
         return;
       }
-      String imageUrl = '';
 
       Quiz quiz = Quiz(
         question: questionController.text,

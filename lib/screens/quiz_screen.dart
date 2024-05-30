@@ -27,7 +27,10 @@ class QuizScreen extends StatelessWidget {
         ],
       ),
       body: Column(
-        children: [Text(quiz['question'])],
+        children: [Text(quiz['question'],
+        Image.network(quiz['imageUrl']),
+        )],
+        
       ),
     );
   }
