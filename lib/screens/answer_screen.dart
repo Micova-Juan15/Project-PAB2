@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:project_pab2/screens/answer_screen.dart';
+import 'package:project_pab2/screens/detail_screen.dart';
 
-class QuizScreen extends StatelessWidget {
+class AnswerScreen extends StatelessWidget {
   final Map<String, dynamic> quiz;
-  const QuizScreen({Key? key, required this.quiz}) : super(key: key);
+  const AnswerScreen({Key? key, required this.quiz}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,8 @@ class QuizScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.favorite),
-            color: Colors.grey,
+            icon: const Icon(Icons.location_on),
+            color: Colors.white,
           )
         ],
       ),
@@ -30,6 +30,14 @@ class QuizScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                quiz['question'],
+                style: TextStyle(color: Colors.white, fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            ),
             if (quiz['image_url'] != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -56,8 +64,8 @@ class QuizScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                quiz['question'],
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                quiz['description'],
+                style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -73,18 +81,11 @@ class QuizScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal, // Background color
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: quiz['correct_choice'] == '1' ? Colors.green : Colors.red,
                 ),
                 onPressed: () {
-                  if (quiz['correct_choice'] == '1') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AnswerScreen(quiz: quiz,),
-                      ),
-                    );
-                  }
+                  
                 },
                 child: Text(
                   '1. ${quiz['choice1']}',
@@ -97,17 +98,10 @@ class QuizScreen extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal, // Background color
+                  backgroundColor: quiz['correct_choice'] == '2' ? Colors.green : Colors.red,
                 ),
                 onPressed: () {
-                  if (quiz['correct_choice'] == '2') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AnswerScreen(quiz: quiz,),
-                      ),
-                    );
-                  }
+                  
                 },
                 child: Text(
                   '2. ${quiz['choice2']}',
@@ -120,17 +114,10 @@ class QuizScreen extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal, // Background color
+                  backgroundColor: quiz['correct_choice'] == '3' ? Colors.green : Colors.red,
                 ),
                 onPressed: () {
-                  if (quiz['correct_choice'] == '3') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AnswerScreen(quiz: quiz,),
-                      ),
-                    );
-                  }
+                  
                 },
                 child: Text(
                   '3. ${quiz['choice3']}',
@@ -143,20 +130,34 @@ class QuizScreen extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal, // Background color
+                  backgroundColor: quiz['correct_choice'] == '4' ? Colors.green : Colors.red,
                 ),
                 onPressed: () {
-                  if (quiz['correct_choice'] == '4') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AnswerScreen(quiz: quiz,),
-                      ),
-                    );
-                  }
+                  
                 },
                 child: Text(
                   '4. ${quiz['choice4']}',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
+                  backgroundColor: Colors.teal,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailScreen(quiz: quiz,),
+                      ),
+                    );
+                },
+                child: Text(
+                  'Details',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

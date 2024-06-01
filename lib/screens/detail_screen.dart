@@ -1,10 +1,77 @@
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+  final Map<String, dynamic> quiz;
+  const DetailScreen({Key? key, required this.quiz}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 73, 128, 117),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 73, 128, 117),
+        title: const Text('Quiz', style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.location_on),
+            color: Colors.white,
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: quiz['correct_choice'] == '1' ? Text(quiz['choice1'],style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,) : 
+              quiz['correct_choice'] == '2' ? Text(quiz['choice2'],style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,):
+              quiz['correct_choice'] == '3' ? Text(quiz['choice3'],style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,):
+              quiz['correct_choice'] == '4' ? Text(quiz['choice4'],style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,):
+              const Text('??',style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,),
+            ),
+            if (quiz['image_url'] != null)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.network(
+                  quiz['image_url'],
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                    return Text(
+                      'Error loading image: $error',
+                      style: TextStyle(color: Colors.red),
+                      textAlign: TextAlign.center,
+                    );
+                  },
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'No image URL provided',
+                  style: TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                quiz['description'],
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_pab2/models/quiz.dart';
 import 'package:project_pab2/screens/insert_screen.dart';
 import 'package:project_pab2/screens/profile_screen.dart';
 import 'package:project_pab2/screens/quiz_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -27,7 +25,6 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-        
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -67,6 +64,10 @@ class HomeScreen extends StatelessWidget {
               if (questionData == null) {
                 return const SizedBox();
               }
+
+              // Print the data for debugging
+              print('Question Data: $questionData');
+
               return Column(
                 children: [
                   const Padding(padding: EdgeInsets.all(10)),
