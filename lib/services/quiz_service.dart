@@ -9,6 +9,7 @@ class QuizService {
 
   static Future<void> addQuiz(Quiz quiz) async {
     Map<String, dynamic> newQuiz = {
+      'id' : quiz.id,
       'question': quiz.question,
       'description': quiz.description,
       'choice1': quiz.choice1,

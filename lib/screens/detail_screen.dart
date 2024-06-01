@@ -12,55 +12,59 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  bool isFavorite = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool isFavourite = false;
+
+  final CollectionReference favorites =
+      FirebaseFirestore.instance.collection('favorites');
 
   @override
   void initState() {
     super.initState();
-    checkIsFavorite();
+    _loadIsFavourite(widget.quiz['id']);
   }
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> checkIsFavorite() async {
-    try {
-      final favoriteRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(_auth.currentUser!.uid)
-          .collection('favorite_quizzes')
-          .doc(widget.quiz['id']);
+  Future<void> toggleFavorite(String itemId) async {
+    User? user = _auth.currentUser;
+    DocumentReference favoriteDoc =
+        favorites.doc(user?.uid).collection('quiz').doc(itemId);
+    DocumentSnapshot docSnapshot = await favoriteDoc.get();
 
-      final docSnapshot = await favoriteRef.get();
+    if (docSnapshot.exists) {
+      favoriteDoc.delete();
       setState(() {
-        isFavorite = docSnapshot.exists;
+        isFavourite = false;
       });
-    } catch (e) {
-      print('Error checking favorite status: $e');
+    } else {
+      favoriteDoc.set({
+        'id': widget.quiz['id'],
+        'question': widget.quiz['question'],
+        'description': widget.quiz['description'],
+        'choice1': widget.quiz['choice1'],
+        'choice2': widget.quiz['choice2'],
+        'choice3': widget.quiz['choice3'],
+        'choice4': widget.quiz['choice4'],
+        'correct_choice': widget.quiz['correct_choice'],
+        'image_url': widget.quiz['image_url'],
+        'latitude': widget.quiz['latitude'],
+        'longitude': widget.quiz['longitude'],
+        'created_at': FieldValue.serverTimestamp(),
+        'updated_at': FieldValue.serverTimestamp(),
+      });
+      setState(() {
+        isFavourite = true;
+      });
     }
   }
 
-  Future<void> toggleFavoriteStatus() async {
-    try {
-      final FirebaseAuth _auth = FirebaseAuth.instance;
-      final favoriteRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(_auth.currentUser!.uid)
-          .collection('favorite_quizzes')
-          .doc(widget.quiz['id']);
-
-      if (isFavorite) {
-        // Remove from favorites if already marked as favorite
-        await favoriteRef.delete();
-      } else {
-        // Add to favorites if not marked as favorite
-        await favoriteRef.set(widget.quiz);
-      }
-
-      setState(() {
-        isFavorite = !isFavorite;
-      });
-    } catch (e) {
-      print('Error toggling favorite status: $e');
-    }
+  Future<void> _loadIsFavourite(String itemId) async {
+    User? user = _auth.currentUser;
+    DocumentReference favoriteDoc =
+        favorites.doc(user?.uid).collection('quiz').doc(itemId);
+    DocumentSnapshot docSnapshot = await favoriteDoc.get();
+    setState(() {
+      isFavourite = docSnapshot.exists;
+    });
   }
 
   @override
@@ -69,7 +73,7 @@ class _DetailScreenState extends State<DetailScreen> {
       backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
-        title: Text('Quiz Details', style: TextStyle(color: Colors.white)),
+        title: const Text('Detail', style: TextStyle(color: Colors.white)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -78,12 +82,14 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: toggleFavoriteStatus,
+            onPressed: () {
+              toggleFavorite(widget.quiz['id']);
+            },
             icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: Colors.red,
+              Icons.favorite,
+              color: isFavourite ? Colors.red : Colors.grey,
             ),
-          ),
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -92,32 +98,44 @@ class _DetailScreenState extends State<DetailScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: widget.quiz['correct_choice'] == '1' ? Text(widget.quiz['choice1'],style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,) : 
-              widget.quiz['correct_choice'] == '2' ? Text(widget.quiz['choice2'],style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,):
-              widget.quiz['correct_choice'] == '3' ? Text(widget.quiz['choice3'],style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,):
-              widget.quiz['correct_choice'] == '4' ? Text(widget.quiz['choice4'],style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,):
-              const Text('??',style: TextStyle(color: Colors.white, fontSize: 20), textAlign: TextAlign.center,),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.network(
-                widget.quiz['image_url'],
-                errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                  return Text(
-                    'Error loading image: $error',
-                    style: TextStyle(color: Colors.red),
-                    textAlign: TextAlign.center,
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
               child: Text(
-                widget.quiz['description'], 
-                style: const TextStyle(color: Colors.white, fontSize: 15), 
+                widget.quiz['correct_choice'] == '1'? widget.quiz['choice1']
+                : widget.quiz['correct_choice'] == '2'? widget.quiz['choice2']
+                : widget.quiz['correct_choice'] == '3'? widget.quiz['choice3']
+                : widget.quiz['correct_choice'] == '4'? widget.quiz['choice4']
+                : '??',
+                style: const TextStyle(color: Colors.white, fontSize: 20),
                 textAlign: TextAlign.center,
               ),
+            ),
+            if (widget.quiz['image_url'] != null &&
+                widget.quiz['image_url'].isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.network(
+                  widget.quiz['image_url'],
+                  errorBuilder:
+                      (BuildContext context, Object error, StackTrace? stackTrace) {
+                    return Text(
+                      'Error loading image: $error',
+                      style: const TextStyle(color: Colors.red),
+                      textAlign: TextAlign.center,
+                    );
+                  },
+                ),
+              )
+            else
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'No image URL provided',
+                  style: TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(widget.quiz['description']),
             )
           ],
         ),

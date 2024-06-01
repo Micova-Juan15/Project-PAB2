@@ -33,43 +33,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _loadUserData();
   }
-  
 
   void _loadUserData() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('users').doc(user.uid).get();
-      setState(() {
-        isSignedIn = true;
-        userName = userDoc['username'];
-        email = user.email ?? '';
-        if (imageUrl == null) {
-          imageUrl = '';
-        } else {
-          imageUrl = userDoc['imageUrl'];
-        }
-      });
-      _usernameController.text = userName;
-    }
+  User? user = _auth.currentUser;
+  if (user != null) {
+    DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
+    if (userDoc.exists) {
+      Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?; // Type casting
+      if (userData != null) {
+        setState(() {
+          isSignedIn = true;
+          userName = userData['username'] ?? ''; // Handle potential null value
+          email = user.email ?? '';
+          imageUrl = userData['imageUrl'] ?? ''; // Handle potential null value
+        });
+        _usernameController.text = userName;
+      }
+    } 
   }
+}
 
   Future<void> _updateUsername(String newUsername) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(_auth.currentUser!.uid)
-          .update({'username': newUsername});
+      await _firestore.collection('users').doc(_auth.currentUser!.uid).update({'username': newUsername});
       setState(() {
         userName = newUsername;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Username updated successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Username updated successfully')));
       _usernameController.text = newUsername;
     } catch (e) {
       print('Error updating username: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error updating username')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error updating username')));
     }
   }
 
@@ -77,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       setState(() {
         isLoading = true;
-        _imageFile = imageFile; // Update _imageFile variable
+        _imageFile = imageFile;
       });
 
       String imageName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
@@ -86,22 +80,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       TaskSnapshot uploadTask = await ref.putFile(imageFile);
       String downloadUrl = await uploadTask.ref.getDownloadURL();
 
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .update({'imageUrl': downloadUrl});
+      await _firestore.collection('users').doc(userId).update({'imageUrl': downloadUrl});
 
       setState(() {
         isLoading = false;
         imageUrl = downloadUrl;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Profile picture updated successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile picture updated successfully')));
     } catch (e) {
       print('Error uploading image: $e');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Error uploading image')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error uploading image')));
       setState(() {
         isLoading = false;
       });
@@ -146,20 +135,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.transparent,
-                      backgroundImage: _imageFile != null
-                          ? FileImage(_imageFile!) as ImageProvider<Object>
-                          : imageUrl != null && imageUrl!.isNotEmpty
-                              ? NetworkImage(imageUrl!) as ImageProvider<Object>
-                              : null,
-                      child: imageUrl == null && _imageFile == null
-                          ? const Icon(Icons.person,
-                              size: 50, color: Colors.white)
-                          : null,
+                      backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
+                          ? NetworkImage(imageUrl!)
+                          : const AssetImage('images/otak.png') as ImageProvider,
                     ),
                   ),
                   IconButton(
                     onPressed: () async {
-                      final pickedFile = await showDialog(
+                      final pickedFile = await showDialog<ImageSource>(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -173,8 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(ImageSource.gallery);
+                                  Navigator.of(context).pop(ImageSource.gallery);
                                 },
                                 child: const Text('Gallery'),
                               ),
@@ -183,11 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                       );
                       if (pickedFile != null) {
-                        final imagePicker = ImagePicker();
-                        final pickedImage = await imagePicker.pickImage(
-                          source: pickedFile,
-                        );
-
+                        final pickedImage = await picker.pickImage(source: pickedFile);
                         if (pickedImage != null) {
                           File imageFile = File(pickedImage.path);
                           _uploadImage(imageFile);
@@ -215,10 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(width: 10),
                       Text(
                         'Email: ',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ],
                   ),
@@ -243,10 +218,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(width: 10),
                       Text(
                         'Username: ',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ],
                   ),
@@ -267,8 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title: const Text('Change Username'),
                           content: TextField(
                             controller: _usernameController,
-                            decoration: const InputDecoration(
-                                hintText: 'Enter new username'),
+                            decoration: const InputDecoration(hintText: 'Enter new username'),
                           ),
                           actions: [
                             TextButton(
@@ -279,8 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             TextButton(
                               onPressed: () {
-                                String newUsername =
-                                    _usernameController.text.trim();
+                                String newUsername = _usernameController.text.trim();
                                 if (newUsername.isNotEmpty) {
                                   _updateUsername(newUsername);
                                 }
@@ -309,10 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(width: 10),
                       Text(
                         'Favorite: ',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ],
                   ),
@@ -322,16 +289,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FavoriteScreen()));
+                        context,
+                        MaterialPageRoute(builder: (context) => FavoriteScreen()),
+                      );
                     },
                     child: const Text(
                       'View favorite list',
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                          decoration: TextDecoration.underline),
+                      style: TextStyle(fontSize: 15, color: Colors.white, decoration: TextDecoration.underline),
                     ),
                   ),
                 ),
@@ -350,8 +314,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _auth.signOut();
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LandingScreen()),
+                    MaterialPageRoute(builder: (context) => const LandingScreen()),
                   );
                 },
                 child: const Padding(

@@ -33,7 +33,7 @@ class FavoriteScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance.collection('users').doc(_auth.currentUser!.uid).collection('favorite_quizzes').get(),
+        future: FirebaseFirestore.instance.collection('favorites').doc(_auth.currentUser!.uid).collection('quiz').get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

@@ -22,6 +22,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 100),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
