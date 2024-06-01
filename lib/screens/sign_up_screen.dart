@@ -61,6 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'username': username,
         'email': email,
+        'role' : 'U',
       });
       Navigator.pushReplacementNamed(
           context, '/signin'); // Alamat routing untuk Sign In

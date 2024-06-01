@@ -33,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _loadUserData();
   }
+  
 
   void _loadUserData() async {
     User? user = _auth.currentUser;
@@ -323,7 +324,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const FavoriteScreen()));
+                              builder: (context) => FavoriteScreen()));
                     },
                     child: const Text(
                       'View favorite list',

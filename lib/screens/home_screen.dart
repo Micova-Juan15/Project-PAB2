@@ -12,6 +12,12 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
         title: const Text('Home', style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -65,9 +71,6 @@ class HomeScreen extends StatelessWidget {
                 return const SizedBox();
               }
 
-              // Print the data for debugging
-              print('Question Data: $questionData');
-
               return Column(
                 children: [
                   const Padding(padding: EdgeInsets.all(10)),
@@ -79,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                             builder: (context) => QuizScreen(quiz: questionData)),
                       );
                     },
-                    child: Text('Quiz ${index + 1}'),
+                    child: Text('Quiz ${index + 1}', style: const TextStyle(color: Colors.black),),
                   ),
                 ],
               );

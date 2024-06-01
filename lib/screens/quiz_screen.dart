@@ -18,13 +18,6 @@ class QuizScreen extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.favorite),
-            color: Colors.grey,
-          )
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(

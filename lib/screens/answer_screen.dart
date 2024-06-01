@@ -30,14 +30,6 @@ class AnswerScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                quiz['question'],
-                style: TextStyle(color: Colors.white, fontSize: 20),
-                textAlign: TextAlign.center,
-              ),
-            ),
             if (quiz['image_url'] != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -64,8 +56,8 @@ class AnswerScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                quiz['description'],
-                style: TextStyle(color: Colors.white),
+                quiz['question'],
+                style: TextStyle(color: Colors.white, fontSize: 20),
                 textAlign: TextAlign.center,
               ),
             ),

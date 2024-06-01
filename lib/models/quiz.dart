@@ -9,8 +9,9 @@ class Quiz {
   final String choice3;
   final String choice4;
   final String correctChoice;
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
+  bool? isFavorite;
   String? imageUrl;
   Timestamp? createdAt;
   Timestamp? updatedAt;
@@ -26,6 +27,7 @@ class Quiz {
       required this.correctChoice,
       required this.latitude,
       required this.longitude,
+      this.isFavorite,
       this.imageUrl,
       this.createdAt,
       this.updatedAt});
@@ -41,6 +43,7 @@ class Quiz {
       choice3: data['choice3'],
       choice4: data['choice4'],
       correctChoice: data['description'],
+      isFavorite: data['is_favorite'],
       imageUrl: data['image_url'],
       latitude: data['latitude'],
       longitude: data['longitude'],
@@ -58,6 +61,7 @@ class Quiz {
       'choice3': choice3,
       'choice4': choice4,
       'correct_choice': correctChoice,
+      'is_favorite' : isFavorite,
       'image_url': imageUrl,
       'latitude': latitude,
       'longitude': longitude,

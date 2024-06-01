@@ -4,8 +4,7 @@ import 'package:project_pab2/models/quiz.dart';
 
 class QuizService {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
-  static final CollectionReference _quizsCollection =
-      _database.collection('quiz');
+  static final CollectionReference _quizsCollection = _database.collection('quiz');
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
   static Future<void> addQuiz(Quiz quiz) async {
@@ -25,6 +24,7 @@ class QuizService {
     };
     await _quizsCollection.add(newQuiz);
   }
+  
 
   static Future<void> updateNote(Quiz quiz) async {
     Map<String, dynamic> updatedQuiz = {

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_pab2/models/quiz.dart';
 import 'package:project_pab2/services/quiz_service.dart';
 
@@ -51,7 +50,7 @@ class _InsertScreenState extends State<InsertScreen> {
     }
   }
 
-  void _insertQuestion() async {
+  void _insertQuiz() async {
     try {
       if (_imageFile == null) {
         print('No image selected.');
@@ -66,8 +65,8 @@ class _InsertScreenState extends State<InsertScreen> {
         choice3: choice3Controller.text,
         choice4: choice4Controller.text,
         correctChoice: correctChoiceController.text,
-        latitude: latitudeController.text,
-        longitude: longtitudeController.text,
+        latitude: double.parse(latitudeController.text),
+        longitude: double.parse(longtitudeController.text),
         imageUrl: imageUrl,
       );
       await QuizService.addQuiz(quiz);
@@ -328,7 +327,7 @@ class _InsertScreenState extends State<InsertScreen> {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: _insertQuestion,
+              onPressed: _insertQuiz,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
               ),
