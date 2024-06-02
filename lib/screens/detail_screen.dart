@@ -108,25 +108,23 @@ class _DetailScreenState extends State<DetailScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            if (widget.quiz['image_url'] != null &&
-                widget.quiz['image_url'].isNotEmpty)
+            if (widget.quiz['image_url'] != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Image.network(
                   widget.quiz['image_url'],
-                  errorBuilder:
-                      (BuildContext context, Object error, StackTrace? stackTrace) {
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                     return Text(
                       'Error loading image: $error',
-                      style: const TextStyle(color: Colors.red),
+                      style: TextStyle(color: Colors.red),
                       textAlign: TextAlign.center,
                     );
                   },
                 ),
               )
             else
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'No image URL provided',
                   style: TextStyle(color: Colors.red),
@@ -135,8 +133,25 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text(widget.quiz['description']),
-            )
+              child: Text(
+                widget.quiz['description'], 
+                style: const TextStyle(color: Colors.white, fontSize: 15),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Latitude : ${widget.quiz['latitude']}', 
+                style: const TextStyle(color: Colors.white, fontSize: 15),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Longitude : ${widget.quiz['longitude']}', 
+                style: const TextStyle(color: Colors.white, fontSize: 15),
+              ),
+            ),
           ],
         ),
       ),

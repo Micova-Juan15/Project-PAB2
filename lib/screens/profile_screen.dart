@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final TextEditingController _usernameController = TextEditingController();
+  late LatLng _currentPosition;
 
   bool isSignedIn = true;
   String userName = '';
@@ -32,6 +35,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _loadUserData();
+    _getCurrentLocation();
+  }
+
+  void _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      _currentPosition = LatLng(position.latitude, position.longitude);
+    });
   }
 
   void _loadUserData() async {
@@ -278,6 +312,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       SizedBox(width: 10),
                       Text(
+                        'Latitude: ',
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    '${_currentPosition.latitude}',
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(color: Colors.white),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: const Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Text(
+                        'Longitude: ',
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    '${_currentPosition.longitude}',
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(color: Colors.white),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: const Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Text(
                         'Favorite: ',
                         style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
@@ -301,6 +385,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
+            const Divider(color: Colors.white),
             const SizedBox(height: 10),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 2),

@@ -1,10 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_pab2/screens/answer_screen.dart';
-import 'package:project_pab2/screens/google_map_screen.dart';
+import 'package:project_pab2/services/quiz_service.dart';
 
-class QuizScreen extends StatelessWidget {
+class QuizScreen extends StatefulWidget {
   final Map<String, dynamic> quiz;
   const QuizScreen({Key? key, required this.quiz}) : super(key: key);
+
+  @override
+  State<QuizScreen> createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen>{
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? role;
+  @override
+  void initState() {
+    super.initState();
+    _loadRole();
+  }
+
+  void _loadRole() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(user.uid).get();
+      setState(() {
+        role = userDoc['role'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,28 +47,24 @@ class QuizScreen extends StatelessWidget {
           },
         ),
         actions: [
+          role == 'A'?
           IconButton(
-            icon: const Icon(Icons.map, color: Colors.white),
+            icon: const Icon(Icons.delete, color: Colors.white),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GoogleMapScreen(),
-                ),
-              );
+              QuizService.deleteQuiz(widget.quiz);
             },
-          ),
+          ): SizedBox(),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (quiz['image_url'] != null)
+            if (widget.quiz['image_url'] != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Image.network(
-                  quiz['image_url'],
+                  widget.quiz['image_url'],
                   errorBuilder: (BuildContext context, Object error,
                       StackTrace? stackTrace) {
                     return Text(
@@ -64,7 +87,7 @@ class QuizScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                quiz['question'],
+                widget.quiz['question'],
                 style: TextStyle(color: Colors.white, fontSize: 20),
                 textAlign: TextAlign.center,
               ),
@@ -87,19 +110,19 @@ class QuizScreen extends StatelessWidget {
                   backgroundColor: Colors.teal, // Background color
                 ),
                 onPressed: () {
-                  if (quiz['correct_choice'] == '1') {
+                  if (widget.quiz['correct_choice'] == '1') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AnswerScreen(
-                          quiz: quiz,
+                          quiz: widget.quiz,
                         ),
                       ),
                     );
                   }
                 },
                 child: Text(
-                  '1. ${quiz['choice1']}',
+                  '1. ${widget.quiz['choice1']}',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -113,19 +136,19 @@ class QuizScreen extends StatelessWidget {
                   backgroundColor: Colors.teal, // Background color
                 ),
                 onPressed: () {
-                  if (quiz['correct_choice'] == '2') {
+                  if (widget.quiz['correct_choice'] == '2') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AnswerScreen(
-                          quiz: quiz,
+                          quiz: widget.quiz,
                         ),
                       ),
                     );
                   }
                 },
                 child: Text(
-                  '2. ${quiz['choice2']}',
+                  '2. ${widget.quiz['choice2']}',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -139,19 +162,19 @@ class QuizScreen extends StatelessWidget {
                   backgroundColor: Colors.teal, // Background color
                 ),
                 onPressed: () {
-                  if (quiz['correct_choice'] == '3') {
+                  if (widget.quiz['correct_choice'] == '3') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AnswerScreen(
-                          quiz: quiz,
+                          quiz: widget.quiz,
                         ),
                       ),
                     );
                   }
                 },
                 child: Text(
-                  '3. ${quiz['choice3']}',
+                  '3. ${widget.quiz['choice3']}',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -165,19 +188,19 @@ class QuizScreen extends StatelessWidget {
                   backgroundColor: Colors.teal, // Background color
                 ),
                 onPressed: () {
-                  if (quiz['correct_choice'] == '4') {
+                  if (widget.quiz['correct_choice'] == '4') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AnswerScreen(
-                          quiz: quiz,
+                          quiz: widget.quiz,
                         ),
                       ),
                     );
                   }
                 },
                 child: Text(
-                  '4. ${quiz['choice4']}',
+                  '4. ${widget.quiz['choice4']}',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -188,3 +211,4 @@ class QuizScreen extends StatelessWidget {
     );
   }
 }
+

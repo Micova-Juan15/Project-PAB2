@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
         '/signin': (context) => const SignInScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/home': (context) => HomeScreen(),
-        '/map': (context) => GoogleMapScreen(),
       },
     );
   }

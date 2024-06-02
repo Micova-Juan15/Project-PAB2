@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_pab2/screens/detail_screen.dart';
+import 'package:project_pab2/screens/google_map_screen.dart';
 
 class AnswerScreen extends StatelessWidget {
   final Map<String, dynamic> quiz;
@@ -20,10 +21,16 @@ class AnswerScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.location_on),
-            color: Colors.white,
-          )
+            icon: const Icon(Icons.map, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GoogleMapScreen(quiz: quiz,),
+                ),
+              );
+            },
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -59,6 +66,27 @@ class AnswerScreen extends StatelessWidget {
                 quiz['question'],
                 style: TextStyle(color: Colors.white, fontSize: 20),
                 textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
+                  backgroundColor: Colors.grey,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailScreen(quiz: quiz,),
+                      ),
+                    );
+                },
+                child: Text(
+                  'More Details',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
             Padding(
@@ -129,27 +157,6 @@ class AnswerScreen extends StatelessWidget {
                 },
                 child: Text(
                   '4. ${quiz['choice4']}',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailScreen(quiz: quiz,),
-                      ),
-                    );
-                },
-                child: Text(
-                  'Details',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

@@ -3,21 +3,23 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
 class GoogleMapScreen extends StatefulWidget {
+  final Map<String, dynamic> quiz;
+  const GoogleMapScreen({Key? key, required this.quiz}) : super(key: key);
+
   @override
   _GoogleMapScreenState createState() => _GoogleMapScreenState();
 }
 
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
   GoogleMapController? _controller;
-  LatLng _currentPosition =
-      LatLng(-6.200000, 106.816666); // Default location (Jakarta)
-  LatLng _otherPosition =
-      LatLng(-6.1751, 106.8650); // Example location (Monas, Jakarta)
+  LatLng _currentPosition = LatLng(-6.200000, 106.816666); // Default location (Jakarta)
+  late LatLng _otherPosition;
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
+    _otherPosition = LatLng(widget.quiz['latitude'], widget.quiz['longitude']);
   }
 
   void _getCurrentLocation() async {
@@ -64,8 +66,16 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       appBar: AppBar(
-        title: Text('Compare Locations'),
+        backgroundColor: const Color.fromARGB(255, 73, 128, 117),
+        title: const Text('Google Map', style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Column(
         children: [
@@ -76,8 +86,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                 // Move camera to current location once map is created
                 if (_currentPosition.latitude != 0 &&
                     _currentPosition.longitude != 0) {
-                  _controller
-                      ?.animateCamera(CameraUpdate.newLatLng(_currentPosition));
+                  _controller?.animateCamera(CameraUpdate.newLatLng(_currentPosition));
                 }
               },
               initialCameraPosition: CameraPosition(
@@ -85,9 +94,16 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                 zoom: 15,
               ),
               markers: {
-                Marker(
-                    markerId: MarkerId('current'), position: _currentPosition),
+                Marker(markerId: MarkerId('current'), position: _currentPosition),
                 Marker(markerId: MarkerId('other'), position: _otherPosition),
+              },
+              polylines: {
+                Polyline(
+                  polylineId: PolylineId('line'),
+                  points: [_currentPosition, _otherPosition],
+                  color: Colors.blue,
+                  width: 5,
+                ),
               },
             ),
           ),
@@ -95,7 +111,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Distance: ${_calculateDistance(_currentPosition, _otherPosition).toStringAsFixed(2)} km',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),
         ],

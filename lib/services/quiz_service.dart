@@ -45,8 +45,8 @@ class QuizService {
     await _quizsCollection.doc(quiz.id).update(updatedQuiz);
   }
 
-  static Future<void> deleteQuiz(Quiz quiz) async {
-    await _quizsCollection.doc(quiz.id).delete();
+  static Future<void> deleteQuiz(Map<String, dynamic> quiz) async {
+      await _quizsCollection.doc(quiz['id']).delete();
   }
 
   static Future<QuerySnapshot> retrieveQuizs() {
