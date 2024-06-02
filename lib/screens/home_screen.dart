@@ -10,14 +10,13 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
-
 }
 
-class _HomeScreenState extends State<HomeScreen>{
+class _HomeScreenState extends State<HomeScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? role;
-  
+
   @override
   void initState() {
     super.initState();
@@ -27,7 +26,8 @@ class _HomeScreenState extends State<HomeScreen>{
   void _loadRole() async {
     User? user = _auth.currentUser;
     if (user != null) {
-      DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(user.uid).get();
       setState(() {
         role = userDoc['role'];
       });
@@ -60,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen>{
           )
         ],
       ),
-      
       floatingActionButton: role == 'A'
           ? FloatingActionButton(
               onPressed: () {

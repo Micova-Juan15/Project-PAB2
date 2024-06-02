@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_pab2/screens/answer_screen.dart';
+import 'package:project_pab2/screens/google_map_screen.dart';
 
 class QuizScreen extends StatelessWidget {
   final Map<String, dynamic> quiz;
@@ -18,6 +19,19 @@ class QuizScreen extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.map, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GoogleMapScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -28,7 +42,8 @@ class QuizScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Image.network(
                   quiz['image_url'],
-                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                  errorBuilder: (BuildContext context, Object error,
+                      StackTrace? stackTrace) {
                     return Text(
                       'Error loading image: $error',
                       style: TextStyle(color: Colors.red),
@@ -58,7 +73,8 @@ class QuizScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Choices:',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -66,7 +82,8 @@ class QuizScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
+                  minimumSize: Size(
+                      double.infinity, 50), // Width: Full width, Height: 50
                   backgroundColor: Colors.teal, // Background color
                 ),
                 onPressed: () {
@@ -74,7 +91,9 @@ class QuizScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AnswerScreen(quiz: quiz,),
+                        builder: (context) => AnswerScreen(
+                          quiz: quiz,
+                        ),
                       ),
                     );
                   }
@@ -89,7 +108,8 @@ class QuizScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
+                  minimumSize: Size(
+                      double.infinity, 50), // Width: Full width, Height: 50
                   backgroundColor: Colors.teal, // Background color
                 ),
                 onPressed: () {
@@ -97,7 +117,9 @@ class QuizScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AnswerScreen(quiz: quiz,),
+                        builder: (context) => AnswerScreen(
+                          quiz: quiz,
+                        ),
                       ),
                     );
                   }
@@ -112,7 +134,8 @@ class QuizScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
+                  minimumSize: Size(
+                      double.infinity, 50), // Width: Full width, Height: 50
                   backgroundColor: Colors.teal, // Background color
                 ),
                 onPressed: () {
@@ -120,7 +143,9 @@ class QuizScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AnswerScreen(quiz: quiz,),
+                        builder: (context) => AnswerScreen(
+                          quiz: quiz,
+                        ),
                       ),
                     );
                   }
@@ -135,7 +160,8 @@ class QuizScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50), // Width: Full width, Height: 50
+                  minimumSize: Size(
+                      double.infinity, 50), // Width: Full width, Height: 50
                   backgroundColor: Colors.teal, // Background color
                 ),
                 onPressed: () {
@@ -143,7 +169,9 @@ class QuizScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AnswerScreen(quiz: quiz,),
+                        builder: (context) => AnswerScreen(
+                          quiz: quiz,
+                        ),
                       ),
                     );
                   }

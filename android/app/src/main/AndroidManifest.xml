@@ -12,6 +12,9 @@
         android:theme="@style/LaunchTheme"
         android:hardwareAccelerated="true"
         android:windowSoftInputMode="adjustResize">
+           <meta-data
+            android:name="com.google.android.geo.AIzaSyDIrxlNTzNvRfcJykh_LHCOGlh49HclV98"
+            android:value="AIzaSyDIrxlNTzNvRfcJykh_LHCOGlh49HclV98"/>
 
         <activity
             android:name=".MainActivity"

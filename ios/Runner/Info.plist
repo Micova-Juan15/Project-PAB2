@@ -29,6 +29,13 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is needed to show you nearby places of interest.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is needed to show you nearby places of interest.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location is needed to show you nearby places of interest.</string>
+
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
