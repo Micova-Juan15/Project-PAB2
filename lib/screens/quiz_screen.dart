@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_pab2/screens/answer_screen.dart';
+import 'package:project_pab2/screens/update_screen.dart';
+import 'package:project_pab2/screens/wrong_screen.dart';
 import 'package:project_pab2/services/quiz_service.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -12,7 +14,7 @@ class QuizScreen extends StatefulWidget {
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
-class _QuizScreenState extends State<QuizScreen>{
+class _QuizScreenState extends State<QuizScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? role;
@@ -47,13 +49,31 @@ class _QuizScreenState extends State<QuizScreen>{
           },
         ),
         actions: [
-          role == 'A'?
-          IconButton(
-            icon: const Icon(Icons.delete, color: Colors.white),
-            onPressed: () {
-              QuizService.deleteQuiz(widget.quiz);
-            },
-          ): SizedBox(),
+          role == 'A'
+              ? IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.white),
+                  onPressed: () {
+                    QuizService.deleteQuiz(widget.quiz);
+                  },
+                )
+              : SizedBox(),
+          role == 'A'
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateScreen(
+                          quiz: widget.quiz,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ))
+              : SizedBox(),
         ],
       ),
       body: SingleChildScrollView(
@@ -105,9 +125,8 @@ class _QuizScreenState extends State<QuizScreen>{
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                      double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal, // Background color
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: const Color(0xFF76ABAE),
                 ),
                 onPressed: () {
                   if (widget.quiz['correct_choice'] == '1') {
@@ -119,6 +138,13 @@ class _QuizScreenState extends State<QuizScreen>{
                         ),
                       ),
                     );
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WrongScreen(
+                                  quiz: widget.quiz,
+                                )));
                   }
                 },
                 child: Text(
@@ -131,9 +157,8 @@ class _QuizScreenState extends State<QuizScreen>{
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                      double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal, // Background color
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: const Color(0xFF76ABAE),
                 ),
                 onPressed: () {
                   if (widget.quiz['correct_choice'] == '2') {
@@ -145,6 +170,13 @@ class _QuizScreenState extends State<QuizScreen>{
                         ),
                       ),
                     );
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WrongScreen(
+                                  quiz: widget.quiz,
+                                )));
                   }
                 },
                 child: Text(
@@ -157,9 +189,8 @@ class _QuizScreenState extends State<QuizScreen>{
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                      double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal, // Background color
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: const Color(0xFF76ABAE),
                 ),
                 onPressed: () {
                   if (widget.quiz['correct_choice'] == '3') {
@@ -171,6 +202,13 @@ class _QuizScreenState extends State<QuizScreen>{
                         ),
                       ),
                     );
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WrongScreen(
+                                  quiz: widget.quiz,
+                                )));
                   }
                 },
                 child: Text(
@@ -183,9 +221,8 @@ class _QuizScreenState extends State<QuizScreen>{
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                      double.infinity, 50), // Width: Full width, Height: 50
-                  backgroundColor: Colors.teal, // Background color
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: const Color(0xFF76ABAE),
                 ),
                 onPressed: () {
                   if (widget.quiz['correct_choice'] == '4') {
@@ -197,6 +234,13 @@ class _QuizScreenState extends State<QuizScreen>{
                         ),
                       ),
                     );
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WrongScreen(
+                                  quiz: widget.quiz,
+                                )));
                   }
                 },
                 child: Text(
@@ -211,4 +255,3 @@ class _QuizScreenState extends State<QuizScreen>{
     );
   }
 }
-

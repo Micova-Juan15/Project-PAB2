@@ -59,7 +59,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       padding: const EdgeInsets.fromLTRB(65, 10, 60, 0),
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/signup');
+                          Navigator.pushNamed(context, '/signin');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -67,16 +67,11 @@ class _LandingScreenState extends State<LandingScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        icon: Image.asset(
-                          'images/add.png',
-                          width: 24,
-                          height: 24,
-                        ),
                         label: Container(
                           height: 40,
                           alignment: Alignment.center,
                           child: const Text(
-                            'Sign Up for Free',
+                            'Sign In',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -99,12 +94,12 @@ class _LandingScreenState extends State<LandingScreen> {
                             text: TextSpan(
                               children: [
                                 const TextSpan(
-                                  text: 'Already have an account?  ',
+                                  text: "Don't have an account?  ",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 ),
                                 TextSpan(
-                                  text: 'Sign In',
+                                  text: 'Sign Up',
                                   style: const TextStyle(
                                     color: Colors.white,
                                     decoration: TextDecoration.underline,
@@ -113,11 +108,13 @@ class _LandingScreenState extends State<LandingScreen> {
                                   mouseCursor: SystemMouseCursors.click,
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.pushNamed(context, '/signin');
+                                      Navigator.pushNamed(context, '/signup');
                                     },
                                 ),
                               ],
-                            ), textScaler: TextScaler.linear(MediaQuery.of(context).textScaleFactor),
+                            ),
+                            textScaler: TextScaler.linear(
+                                MediaQuery.of(context).textScaleFactor),
                           ),
                         ),
                       ),

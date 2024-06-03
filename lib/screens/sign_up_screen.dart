@@ -64,7 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'role' : 'U',
       });
       Navigator.pushReplacementNamed(
-          context, '/signin'); // Alamat routing untuk Sign In
+          context, '/signin');
     } on FirebaseAuthException catch (e) {
       setState(() {
         _errorText = e.message!;

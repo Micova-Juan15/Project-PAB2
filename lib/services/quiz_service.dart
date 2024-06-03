@@ -4,12 +4,13 @@ import 'package:project_pab2/models/quiz.dart';
 
 class QuizService {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
-  static final CollectionReference _quizsCollection = _database.collection('quiz');
+  static final CollectionReference _quizsCollection =
+      _database.collection('quiz');
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
   static Future<void> addQuiz(Quiz quiz) async {
     Map<String, dynamic> newQuiz = {
-      'id' : quiz.id,
+      'id': quiz.id,
       'question': quiz.question,
       'description': quiz.description,
       'choice1': quiz.choice1,
@@ -25,9 +26,8 @@ class QuizService {
     };
     await _quizsCollection.add(newQuiz);
   }
-  
 
-  static Future<void> updateNote(Quiz quiz) async {
+  static Future<void> updateQuiz(Quiz quiz) async {
     Map<String, dynamic> updatedQuiz = {
       'question': quiz.question,
       'description': quiz.description,
@@ -46,7 +46,7 @@ class QuizService {
   }
 
   static Future<void> deleteQuiz(Map<String, dynamic> quiz) async {
-      await _quizsCollection.doc(quiz['id']).delete();
+    await _quizsCollection.doc(quiz['id']).delete();
   }
 
   static Future<QuerySnapshot> retrieveQuizs() {

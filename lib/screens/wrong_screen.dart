@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_pab2/screens/detail_screen.dart';
-import 'package:project_pab2/screens/google_map_screen.dart';
 
-class AnswerScreen extends StatelessWidget {
+class WrongScreen extends StatelessWidget {
   final Map<String, dynamic> quiz;
-  const AnswerScreen({Key? key, required this.quiz}) : super(key: key);
+  const WrongScreen({Key? key, required this.quiz}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +17,6 @@ class AnswerScreen extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.map, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GoogleMapScreen(
-                    quiz: quiz,
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -77,20 +60,13 @@ class AnswerScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(
                       double.infinity, 50),
-                  backgroundColor: const Color(0xFF76ABAE),
+                  backgroundColor: Colors.teal,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailScreen(
-                        quiz: quiz,
-                      ),
-                    ),
-                  );
+                  Navigator.pop(context);
                 },
                 child: Text(
-                  'More Details',
+                  'Try Again',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -109,8 +85,7 @@ class AnswerScreen extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 50),
-                  backgroundColor:
-                      quiz['correct_choice'] == '1' ? Colors.green : Colors.red,
+                  backgroundColor: Colors.red,
                 ),
                 onPressed: () {},
                 child: Text(
@@ -125,8 +100,7 @@ class AnswerScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(
                       double.infinity, 50),
-                  backgroundColor:
-                      quiz['correct_choice'] == '2' ? Colors.green : Colors.red,
+                  backgroundColor: Colors.red,
                 ),
                 onPressed: () {},
                 child: Text(
@@ -141,8 +115,7 @@ class AnswerScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(
                       double.infinity, 50),
-                  backgroundColor:
-                      quiz['correct_choice'] == '3' ? Colors.green : Colors.red,
+                  backgroundColor: Colors.red,
                 ),
                 onPressed: () {},
                 child: Text(
@@ -157,8 +130,7 @@ class AnswerScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(
                       double.infinity, 50),
-                  backgroundColor:
-                      quiz['correct_choice'] == '4' ? Colors.green : Colors.red,
+                  backgroundColor: Colors.red,
                 ),
                 onPressed: () {},
                 child: Text(

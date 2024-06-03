@@ -5,26 +5,53 @@ import 'package:image_picker/image_picker.dart';
 import 'package:project_pab2/models/quiz.dart';
 import 'package:project_pab2/services/quiz_service.dart';
 
-class InsertScreen extends StatefulWidget {
+class UpdateScreen extends StatefulWidget {
+  final Map<String, dynamic> quiz;
+
+  const UpdateScreen({Key? key, required this.quiz}) : super(key: key);
+
   @override
-  _InsertScreenState createState() => _InsertScreenState();
+  _UpdateScreenState createState() => _UpdateScreenState();
 }
 
-class _InsertScreenState extends State<InsertScreen> {
-  final TextEditingController questionController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController choice1Controller = TextEditingController();
-  final TextEditingController choice2Controller = TextEditingController();
-  final TextEditingController choice3Controller = TextEditingController();
-  final TextEditingController choice4Controller = TextEditingController();
-  final TextEditingController correctChoiceController = TextEditingController();
-  final TextEditingController latitudeController = TextEditingController();
-  final TextEditingController longtitudeController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+class _UpdateScreenState extends State<UpdateScreen> {
+  TextEditingController questionController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController choice1Controller = TextEditingController();
+  TextEditingController choice2Controller = TextEditingController();
+  TextEditingController choice3Controller = TextEditingController();
+  TextEditingController choice4Controller = TextEditingController();
+  TextEditingController correctChoiceController = TextEditingController();
+  TextEditingController latitudeController = TextEditingController();
+  TextEditingController longtitudeController = TextEditingController();
+  ImagePicker _picker = ImagePicker();
+  FirebaseStorage _storage = FirebaseStorage.instance;
   bool isLoading = false;
   String imageUrl = '';
   File? _imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    questionController =
+        TextEditingController(text: widget.quiz['question'] ?? '');
+    descriptionController =
+        TextEditingController(text: widget.quiz['description'] ?? '');
+    choice1Controller =
+        TextEditingController(text: widget.quiz['choice1'] ?? '');
+    choice2Controller =
+        TextEditingController(text: widget.quiz['choice2'] ?? '');
+    choice3Controller =
+        TextEditingController(text: widget.quiz['choice3'] ?? '');
+    choice4Controller =
+        TextEditingController(text: widget.quiz['choice4'] ?? '');
+    correctChoiceController =
+        TextEditingController(text: widget.quiz['correct_choice'] ?? '');
+    latitudeController =
+        TextEditingController(text: widget.quiz['latitude'].toString() ?? '');
+    longtitudeController =
+        TextEditingController(text: widget.quiz['longitude'].toString() ?? '');
+  }
 
   void _pickImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
@@ -36,8 +63,7 @@ class _InsertScreenState extends State<InsertScreen> {
 
       String imageName = 'quiz${DateTime.now().millisecondsSinceEpoch}.jpg';
       Reference ref = _storage.ref().child('quiz_images/$imageName');
-      TaskSnapshot uploadTask =
-          await ref.putFile(_imageFile!);
+      TaskSnapshot uploadTask = await ref.putFile(_imageFile!);
       String downloadUrl = await uploadTask.ref.getDownloadURL();
 
       setState(() {
@@ -49,7 +75,7 @@ class _InsertScreenState extends State<InsertScreen> {
     }
   }
 
-  void _insertQuiz() async {
+  void _updateQuiz() async {
     try {
       if (_imageFile == null) {
         print('No image selected.');
@@ -57,6 +83,7 @@ class _InsertScreenState extends State<InsertScreen> {
       }
 
       Quiz quiz = Quiz(
+        id: widget.quiz['id'],
         question: questionController.text,
         description: descriptionController.text,
         choice1: choice1Controller.text,
@@ -64,15 +91,16 @@ class _InsertScreenState extends State<InsertScreen> {
         choice3: choice3Controller.text,
         choice4: choice4Controller.text,
         correctChoice: correctChoiceController.text,
+        imageUrl: imageUrl,
         latitude: double.parse(latitudeController.text),
         longitude: double.parse(longtitudeController.text),
-        imageUrl: imageUrl,
       );
-      await QuizService.addQuiz(quiz);
+
+      await QuizService.updateQuiz(quiz);
 
       Navigator.pop(context);
     } catch (e) {
-      print('Error inserting question: $e');
+      print('Error updating quiz: $e');
     }
   }
 
@@ -326,12 +354,12 @@ class _InsertScreenState extends State<InsertScreen> {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: _insertQuiz,
+              onPressed: _updateQuiz,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
               ),
               child: const Text(
-                'Insert Question',
+                'Update Quiz',
                 style: TextStyle(color: Colors.white),
               ),
             ),

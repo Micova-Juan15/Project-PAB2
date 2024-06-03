@@ -12,7 +12,7 @@ class GoogleMapScreen extends StatefulWidget {
 
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
   GoogleMapController? _controller;
-  LatLng _currentPosition = LatLng(-6.200000, 106.816666); // Default location (Jakarta)
+  LatLng _currentPosition = LatLng(0, 0);
   late LatLng _otherPosition;
 
   @override
@@ -26,7 +26,6 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('Location services are disabled.');
@@ -60,7 +59,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
       end.latitude,
       end.longitude,
     );
-    return distanceInMeters / 1000; // Convert to kilometers
+    return distanceInMeters / 1000;
   }
 
   @override
@@ -83,7 +82,6 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             child: GoogleMap(
               onMapCreated: (controller) {
                 _controller = controller;
-                // Move camera to current location once map is created
                 if (_currentPosition.latitude != 0 &&
                     _currentPosition.longitude != 0) {
                   _controller?.animateCamera(CameraUpdate.newLatLng(_currentPosition));
