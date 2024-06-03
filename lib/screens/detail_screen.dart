@@ -94,7 +94,7 @@ class DetailScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          CommentScreen(quiz: quiz,)), // navigate to CommentScreen
+                          CommentScreen(quiz: quiz,)),
                 );
               },
               style: ButtonStyle(
@@ -111,7 +111,8 @@ class DetailScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AddCommentScreen(quiz: quiz)),
+                    builder: (context) => AddCommentScreen(quiz: quiz)
+                  ),
                 );
               },
               style: ButtonStyle(

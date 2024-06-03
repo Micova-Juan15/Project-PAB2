@@ -108,7 +108,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
         choice4: choice4Controller.text,
         correctChoice: correctChoiceController.text,
         imageUrl:
-            imageUrl, // Use the existing imageUrl if no new image is selected
+            imageUrl,
         latitude: double.parse(latitudeController.text),
         longitude: double.parse(longtitudeController.text),
       );
