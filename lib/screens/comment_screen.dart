@@ -67,7 +67,7 @@ class CommentCard extends StatelessWidget {
             ),
             const SizedBox(height: 8.0),
             Text(
-              'User: ${comment['userName']}',
+              'User: ${comment['username']}',
               style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
