@@ -15,6 +15,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _commentController = TextEditingController();
   String? _userName;
+  String? _userId;
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
           .get();
       setState(() {
         _userName = snapshot['username'];
+        _userId = user.uid;
       });
     }
   }
@@ -41,9 +43,10 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     User? user = _auth.currentUser;
     if (user == null) return;
 
-    await FirebaseFirestore.instance.collection('admin_comments').add({
+    await FirebaseFirestore.instance.collection('comments').add({
       'comment': _commentController.text,
-      'user_id': _userName,
+      'user_id': _userId,
+      'username': _userName,
       'quiz_id': widget.quiz['id'],
       'timestamp': FieldValue.serverTimestamp(),
     });

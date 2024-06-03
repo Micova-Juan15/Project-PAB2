@@ -94,7 +94,7 @@ class DetailScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          CommentScreen()), // navigate to CommentScreen
+                          CommentScreen(quiz: quiz,)), // navigate to CommentScreen
                 );
               },
               style: ButtonStyle(

@@ -13,12 +13,12 @@ class GoogleMapScreen extends StatefulWidget {
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
   GoogleMapController? _controller;
   LatLng _currentPosition = LatLng(0, 0);
-  late LatLng _otherPosition;
+  late LatLng _quizPosition;
 
   @override
   void initState() {
     super.initState();
-    _otherPosition = LatLng(widget.quiz['latitude'], widget.quiz['longitude']);
+    _quizPosition = LatLng(widget.quiz['latitude'], widget.quiz['longitude']);
     _getCurrentLocation();
   }
 
@@ -82,20 +82,20 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             child: GoogleMap(
               onMapCreated: (controller) {
                 _controller = controller;
-                  _controller?.animateCamera(CameraUpdate.newLatLng(_otherPosition));
+                  _controller?.animateCamera(CameraUpdate.newLatLng(_quizPosition));
               },
               initialCameraPosition: CameraPosition(
-                target: _currentPosition,
+                target: _quizPosition,
                 zoom: 15,
               ),
               markers: {
                 Marker(markerId: MarkerId('current'), position: _currentPosition),
-                Marker(markerId: MarkerId('other'), position: _otherPosition),
+                Marker(markerId: MarkerId('other'), position: _quizPosition),
               },
               polylines: {
                 Polyline(
                   polylineId: PolylineId('line'),
-                  points: [_currentPosition, _otherPosition],
+                  points: [_currentPosition, _quizPosition],
                   color: Colors.blue,
                   width: 5,
                 ),
@@ -105,7 +105,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Distance: ${_calculateDistance(_currentPosition, _otherPosition).toStringAsFixed(2)} km',
+              'Distance: ${_calculateDistance(_currentPosition, _quizPosition).toStringAsFixed(2)} km',
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),

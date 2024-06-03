@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CommentScreen extends StatefulWidget {
-  const CommentScreen({Key? key}) : super(key: key);
+  final Map<String, dynamic> quiz;
+  const CommentScreen({Key? key, required this.quiz}) : super(key: key);
 
   @override
   _CommentScreenState createState() => _CommentScreenState();
@@ -10,7 +11,7 @@ class CommentScreen extends StatefulWidget {
 
 class _CommentScreenState extends State<CommentScreen> {
   final CollectionReference comments =
-      FirebaseFirestore.instance.collection('admin_comments');
+      FirebaseFirestore.instance.collection('comments');
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,7 @@ class _CommentScreenState extends State<CommentScreen> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var comment = snapshot.data!.docs[index];
+              if(widget.quiz['id'] == comment.get('quiz_id'))
               return CommentCard(comment: comment);
             },
           );
@@ -65,7 +67,7 @@ class CommentCard extends StatelessWidget {
             ),
             const SizedBox(height: 8.0),
             Text(
-              'User: ${comment['user_id']}',
+              'User: ${comment['userName']}',
               style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
