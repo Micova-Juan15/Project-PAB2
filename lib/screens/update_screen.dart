@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_pab2/models/quiz.dart';
 import 'package:project_pab2/services/quiz_service.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class UpdateScreen extends StatefulWidget {
   final Map<String, dynamic> quiz;
@@ -29,6 +31,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   bool isLoading = false;
   String imageUrl = '';
   File? _imageFile;
+  Uint8List? _webImage;
 
   @override
   void initState() {
@@ -59,12 +62,24 @@ class _UpdateScreenState extends State<UpdateScreen> {
     if (pickedFile != null) {
       setState(() {
         isLoading = true;
-        _imageFile = File(pickedFile.path);
       });
+
+      if (kIsWeb) {
+        _webImage = await pickedFile.readAsBytes();
+      } else {
+        _imageFile = File(pickedFile.path);
+      }
 
       String imageName = 'quiz${DateTime.now().millisecondsSinceEpoch}.jpg';
       Reference ref = _storage.ref().child('quiz_images/$imageName');
-      TaskSnapshot uploadTask = await ref.putFile(_imageFile!);
+
+      TaskSnapshot uploadTask;
+      if (kIsWeb) {
+        uploadTask = await ref.putData(_webImage!);
+      } else {
+        uploadTask = await ref.putFile(_imageFile!);
+      }
+
       String downloadUrl = await uploadTask.ref.getDownloadURL();
 
       setState(() {
@@ -78,7 +93,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
   void _updateQuiz() async {
     try {
-      if (_imageFile == null) {
+      if (_imageFile == null && imageUrl.isEmpty && _webImage == null) {
         print('No image selected.');
         return;
       }
@@ -92,7 +107,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
         choice3: choice3Controller.text,
         choice4: choice4Controller.text,
         correctChoice: correctChoiceController.text,
-        imageUrl: imageUrl,
+        imageUrl:
+            imageUrl, // Use the existing imageUrl if no new image is selected
         latitude: double.parse(latitudeController.text),
         longitude: double.parse(longtitudeController.text),
       );
@@ -133,12 +149,14 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            if (_imageFile == null) ...[
-              Image.network(imageUrl),
+            if (_webImage != null) ...[
+              Image.memory(_webImage!),
               const SizedBox(height: 20),
-            ],
-            if (_imageFile != null) ...[
+            ] else if (_imageFile != null) ...[
               Image.file(_imageFile!),
+              const SizedBox(height: 20),
+            ] else if (imageUrl.isNotEmpty) ...[
+              Image.network(imageUrl),
               const SizedBox(height: 20),
             ],
             const SizedBox(height: 10),
@@ -335,7 +353,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
             ),
             const SizedBox(height: 10),
             const Text(
-              "Longtitude",
+              "Longitude",
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
@@ -346,7 +364,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
-                hintText: 'Enter Longtitude',
+                hintText: 'Enter Longitude',
                 hintStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
