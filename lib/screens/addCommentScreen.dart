@@ -57,6 +57,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
         title: const Text('Add Comment', style: TextStyle(color: Colors.white)),
@@ -84,7 +85,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
             ElevatedButton(
               onPressed: _submitComment,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF76ABAE)),
               ),
               child: const Text(
                 'Submit Comment',
