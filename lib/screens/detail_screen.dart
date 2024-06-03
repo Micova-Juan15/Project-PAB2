@@ -14,6 +14,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isFavourite = false;
+  
 
   final CollectionReference favorites =
       FirebaseFirestore.instance.collection('favorites');

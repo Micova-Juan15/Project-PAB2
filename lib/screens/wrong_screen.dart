@@ -60,7 +60,7 @@ class WrongScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(
                       double.infinity, 50),
-                  backgroundColor: Colors.teal,
+                  backgroundColor: const Color(0xFF76ABAE),
                 ),
                 onPressed: () {
                   Navigator.pop(context);

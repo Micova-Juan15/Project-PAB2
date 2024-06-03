@@ -88,7 +88,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                 }
               },
               initialCameraPosition: CameraPosition(
-                target: _currentPosition,
+                target: _otherPosition,
                 zoom: 15,
               ),
               markers: {

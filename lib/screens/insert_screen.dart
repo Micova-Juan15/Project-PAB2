@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -49,6 +50,12 @@ class _InsertScreenState extends State<InsertScreen> {
     }
   }
 
+  String generateRandomString(int length) {
+  const String chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  Random random = Random();
+  return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join('');
+}
+
   void _insertQuiz() async {
     try {
       if (_imageFile == null) {
@@ -57,6 +64,7 @@ class _InsertScreenState extends State<InsertScreen> {
       }
 
       Quiz quiz = Quiz(
+        id: generateRandomString(10),
         question: questionController.text,
         description: descriptionController.text,
         choice1: choice1Controller.text,

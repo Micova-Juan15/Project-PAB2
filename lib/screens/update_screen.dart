@@ -132,6 +132,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+            if (imageUrl == '' && _imageFile == null) ...[
+              Image.network(widget.quiz['image_url']),
+              const SizedBox(height: 20),
+            ],
             if (_imageFile != null) ...[
               Image.file(_imageFile!),
               const SizedBox(height: 20),
