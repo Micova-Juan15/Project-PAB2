@@ -60,6 +60,12 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
         title: const Text('Add Comment', style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
