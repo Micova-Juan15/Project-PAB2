@@ -137,6 +137,7 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Text(
                 widget.quiz['description'], 
                 style: const TextStyle(color: Colors.white, fontSize: 15),
+                textAlign: TextAlign.center,
               ),
             ),
             Padding(

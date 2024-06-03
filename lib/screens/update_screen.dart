@@ -51,6 +51,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
         TextEditingController(text: widget.quiz['latitude'].toString() ?? '');
     longtitudeController =
         TextEditingController(text: widget.quiz['longitude'].toString() ?? '');
+    imageUrl = widget.quiz['image_url'];
   }
 
   void _pickImage() async {
@@ -132,8 +133,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            if (imageUrl == '' && _imageFile == null) ...[
-              Image.network(widget.quiz['image_url']),
+            if (_imageFile == null) ...[
+              Image.network(imageUrl),
               const SizedBox(height: 20),
             ],
             if (_imageFile != null) ...[

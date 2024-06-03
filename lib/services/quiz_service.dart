@@ -24,7 +24,7 @@ class QuizService {
       'created_at': FieldValue.serverTimestamp(),
       'updated_at': FieldValue.serverTimestamp(),
     };
-    await _quizsCollection.add({newQuiz}).then((DocumentReference doc){
+    await _quizsCollection.add(newQuiz).then((DocumentReference doc){
       _quizsCollection.doc(doc.id).update({'id' : doc.id});
     });
   }

@@ -18,8 +18,8 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
     _otherPosition = LatLng(widget.quiz['latitude'], widget.quiz['longitude']);
+    _getCurrentLocation();
   }
 
   void _getCurrentLocation() async {
@@ -57,7 +57,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
       start.latitude,
       start.longitude,
       end.latitude,
-      end.longitude,
+      end.longitude
     );
     return distanceInMeters / 1000;
   }
@@ -82,13 +82,10 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             child: GoogleMap(
               onMapCreated: (controller) {
                 _controller = controller;
-                if (_currentPosition.latitude != 0 &&
-                    _currentPosition.longitude != 0) {
-                  _controller?.animateCamera(CameraUpdate.newLatLng(_currentPosition));
-                }
+                  _controller?.animateCamera(CameraUpdate.newLatLng(_otherPosition));
               },
               initialCameraPosition: CameraPosition(
-                target: _otherPosition,
+                target: _currentPosition,
                 zoom: 15,
               ),
               markers: {
