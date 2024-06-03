@@ -61,6 +61,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         onPressed: () {
                           Navigator.pushNamed(context, '/signin');
                         },
+                        icon: const Icon(Icons.output_outlined),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
