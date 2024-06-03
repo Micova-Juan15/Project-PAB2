@@ -98,7 +98,7 @@ class DetailScreen extends StatelessWidget {
                 );
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF76ABAE)),
               ),
               child: const Text(
                 'View Comments',
@@ -115,7 +115,7 @@ class DetailScreen extends StatelessWidget {
                 );
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF76ABAE)),
               ),
               child: const Text(
                 'Add Comment',

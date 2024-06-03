@@ -16,10 +16,16 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 73, 128, 117),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 73, 128, 117),
-        title:
-            const Text('User Comments', style: TextStyle(color: Colors.white)),
+        title: const Text('Comments', style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: comments.orderBy('timestamp', descending: true).snapshots(),
@@ -52,6 +58,7 @@ class CommentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: const Color(0xFF76ABAE),
       margin: const EdgeInsets.all(8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -62,24 +69,23 @@ class CommentCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              comment['comment'],
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 8.0),
-            Text(
-              'User: ${comment['username']}',
+              '${comment['username']}',
               style: const TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
             ),
-            const SizedBox(height: 8.0),
+            Text(
+              comment['comment'],
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300, color: Colors.white),
+            ),
+            const SizedBox(height: 16.0),
             Text(
               'Timestamp: ${comment['timestamp'] != null ? (comment['timestamp'] as Timestamp).toDate().toString() : 'N/A'}',
               style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
-                  color: Colors.grey),
+                  color: Colors.white),
             ),
           ],
         ),
